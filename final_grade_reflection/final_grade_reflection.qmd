@@ -1,11 +1,68 @@
 ---
 title: "Final Grade Reflection"
-author: "Your Name Goes Here"
+author: "Jamie Thompson"
 format: pdf
 editor: visual
 ---
 
-In this document, you make a data-based argument for the grade you've earned in this course. Your argument should include evidence from the supporting artifacts you've provided. 
+# Week 6 Reflection
 
-The output document should be a PDF or a Word Document, as it should be a **maximum** of 2-pages. 
----
+## Proficiency with the Learning Targets
+
+### Reproducibility:
+
+So far, I have demonstrated proficiency with creating professional looking and reproducible analysis using RStudio projects, quarto documents, and the here package. This includes YAML configurations, r-code chunk specifications using hash pipes, formatting text within the document with use of headers, bold and color text and using the here package to easily load in data with the `.Rproj` point of reference. I demonstrate this well in **Lab4,** configuring my YAML so my title has a light blue background and the html document has a table of contents and code folds. Within the *Loading in the Data* section, I use the here package to easily show the path for where the data is be loaded in from. Additionally, in **Lab4** I also demonstrate well documented and tidy code by walking the reader through what I did either by comments in the code chunks, or with comments within the document. As well as using white space and new lines when necessary to make the readability of my code as friendly as possible. Finally, I demonstrate robust programs that are resistant to input changes by using variable names and naming new variables when I create them in tables. This is also shown in **Lab4**, **Question 4.** All these factors make my document easy to read and reproduce for another reader and myself.
+
+### Working with Data:
+
+While using the here package to easily load in data using a specific `Rproj` point of reference, I am able to import in a variety of data such as `.xlsx` and `.txt` files that may be separated by space, bar, or other means. **Challenge4** is a good representation of reading in two these different data sets.
+
+Furthermore, I have demonstrated proficiency in being able to select columns, filter rows for a variety of types, modify existing variables and create new variables, as well as use mutating and filtering joins to alter data sets to my needs. All of these learning targets are shown in my **Lab4** document.
+
+### Data Visualization:
+
+...to be finished...
+
+\>\>\>\>\> from last reflection
+
+Along with data import, I have shown skill in data visualization (DSV-1, 2, 3) with use of ggplots and ggridges. Being able to plot a variety of data types that are either categorical or quantitative and use plot modifications such as color, alterations to opacity, jitter, axis labels, etc. to make visualization of the plots clearer. During this week 2 assignment I did a lot of googling research on plots and implemented some of them into my code. For example, getting rid of long tails in density plots, it made them much easier to see. However, I could improve on my plot visualization some more, and will do so as time goes on implementing feedback into future docs.
+
+\<\<\<\<\<\<
+
+### Programming Efficiency:
+
+... to be filled...
+
+## Continued Learning
+
+\(1\) choose Challenge assignments which demonstrate evidence of how you extended what you learned in class, and (2) choose problems where you were required to submit revisions. Your revised problems should include a description of how you revised your thinking when completing the revision.
+
+I have demonstrated a commitment to my continued learning by attempting every challenge so far. **Challenge4**
+
+\>\>\>\>\> from last reflection
+
+... by extending my thinking from what I learned in class though lab and challenge problems by attempting everything and adding flare if I find something interesting. So far, I have earned S marks on all my assignments and have not had a chance to demonstrate my ability to revise my thinking. However, for this week's lab assignment I am implementing feedback given from the previous week to further bolster my plots.
+
+\<\<\<\<\<\<
+
+## Contribution to the Classroom and my Team Community
+
+...to be finished... add screen shots of code used to assist team members and discord
+
+\>\>\>\>\> from last reflection
+
+I try to encourage others and ask how they are doing on assignments via group chat to make sure no one is being left behind. However, for our Tuesday group assignments I could try to be a better recorder/reporter although it is difficult to find the time to record our group session as we go.
+
+I do feel I have been going toward my goals I have set at the beginning of the class, learning how to use rStudio, make documents, and take data and turn it into easy visualizations and tables. Overall, I have been really enjoying the class and playing around with the quarto docs and coding with r. It is very satisfying figuring out how to get exactly what you want with some code that is easy to understand.
+
+\<\<\<\<\<\<
+
+## Overall Grade Reflection
+
+I believe my grade to be in the A range as will be evidence with my reflections above (once I complete all my reflections). I have completed all the assignments with full attempts and of those I have earned either though first submission or with revisions a S mark, except on one assignment Challenge4... I am still working on that one. I also assist and aid members of the classroom and my team whenever I can on discord or group chat. I also ask questions whenever I have them in the discord so others who have similar questions can see what responses have been given.
+
+... to be finished... add more. Look at the grade breakdown on syllubus
+
+#### side notes
+
+Note: to render as pdf, it asked me to install `tinytex::install_tinytex()`
