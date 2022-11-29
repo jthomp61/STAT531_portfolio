@@ -3,3 +3,25 @@ title: "Lightening Round Essays"
 format: html
 editor: visual
 ---
+
+**Lightning round**: Answer each of the following questions with **one sentence** including a brief explanation.
+
+1.  "If \[Student\] doesn't earn an A, then nobody should, because..."
+
+    -   Not sure how I like this question. I don't know many students in the class or how they are doing. I also think 'grades' especially in this class are not based on a specific individual setting **the** bar, but rather how a single individual evolves through their own learning style and timeframe needed.
+
+2.  What was the most difficult part of the class for you? List a general topic, a specific problem, a kind of work we did, etc. and explain why.
+
+    -   Thinking of ways to visualize data from a data set. What graph/graphs best to use to represent the variables you want to show and how to make the visualizaiton look pleasant to the viewer.
+
+3.  What was the easiest part of the class for you? Explain why.
+
+    -   Finding motivation to do the assignments! They were really fun to do and felt very rewarding once completed.
+
+4.  What part of the class surprised or interested you the most? Explain why.
+
+    -   
+
+5.  Give one piece of advice to a student just beginning a quarter of STAT 331 that will help them be successful in learning.
+
+    -   
