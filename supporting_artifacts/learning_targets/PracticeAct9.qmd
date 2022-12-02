@@ -1,7 +1,14 @@
 ---
 title: "Practive Activity 9: Regression"
 author: "Jamie Thompson"
-format: html
+format: 
+  html: 
+    self-contained: true
+    code-fold: show
+    code-tools: true
+title-block-banner: true
+title-block-banner-color: "light blue"
+toc: true
 editor: visual
 ---
 
@@ -15,10 +22,12 @@ library(tidyverse)
 The dataset "mystery_animal.csv" contains the weights of a particular animal before and after a year of eating only roasted duck.
 
 ```{r}
-animals <- read.csv(here::here("Week 9", 
-                               "Lab9", 
-                               "Tues", 
-                               "mystery_animal.csv"))
+#| message: false
+animals <- read.csv(here::here("supporting_artifacts",
+                               "learning_targets", 
+                               "Data",
+                               "mystery_animal.csv")
+                    )
 ```
 
 # **2 Linear Regression**

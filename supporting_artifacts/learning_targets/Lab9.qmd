@@ -3,6 +3,7 @@ title: "Lab 9: Baby Names"
 author: "Jamie Thompson"
 format: 
   html: 
+    self-contained: true
     code-fold: show
     code-tools: true
 title-block-banner: true
@@ -28,9 +29,11 @@ The data in this lab contains many baby names and how many babies were named eac
 For a majority of this lab, I will look at the name "Allison" and how it has changed over time. Since her name begins with "A", I downloaded the `StateNames_A.csv` and import in it below.
 
 ```{r}
-StateNames_A <- read.csv(here::here("Week 9", 
-                                    "Lab9", 
-                                    "StateNames_A.csv"))
+StateNames_A <- read.csv(here::here("supporting_artifacts",
+                                    "learning_targets", 
+                                    "Data", 
+                                    "StateNames_A.csv")
+                         )
 ```
 
 ## **3 Summarizing & Visualizing the Number of Allisons**

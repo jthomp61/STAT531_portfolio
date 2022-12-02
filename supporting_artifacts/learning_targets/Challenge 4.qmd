@@ -3,6 +3,7 @@ title: "Challenge 4"
 author: "Jamie Thompson"
 format: 
   html: 
+    self-contained: true
     code-fold: show
     code-tools: true
 title-block-banner: true
@@ -24,12 +25,18 @@ library(tidyverse)
 
 ```{r}
 #| message: false
-homes <- read_xls(here::here("Week 4", "Lab4", "homes.xls"),
+homes <- read_xls(here::here("supporting_artifacts", 
+                             "learning_targets", 
+                             "Data", 
+                             "homes.xls"),
                           sheet = "Median Price",
                           skip = 7
                         )
 
-avos <- read_csv(here::here("Week 4", "Lab4", "avocado.csv")
+avos <- read_csv(here::here("supporting_artifacts", 
+                            "learning_targets", 
+                            "Data",
+                            "avocado.csv")
                  )
 ```
 

@@ -3,6 +3,7 @@ title: "Lab 9: Singing a Song"
 author: Jamie Thompson
 format: 
   html: 
+    self-contained: true
     code-fold: show
     code-tools: true
 title-block-banner: true
@@ -14,8 +15,9 @@ editor: visual
 NOTE: Items I have altered form my Lab8 submission will be indicated with [\*\***Changed\*\***]{.underline}
 
 ```{r}
-#| include: false
-library(dplyr)
+#| message: false
+#| warning: false
+library(tidyverse)
 library(glue)
 library(stringr)
 library(purrr)
@@ -24,7 +26,12 @@ library(purrr)
 Loading in the Dataset
 
 ```{r}
-xmas <- read.csv("https://www.dropbox.com/s/e584pryn8evm1gz/xmas.csv?dl=1")
+#| message: false
+xmas <- read_csv(here::here("supporting_artifacts",
+                            "learning_targets", 
+                            "Data", 
+                            "xmas.csv")
+                    )
 ```
 
 ## Step One: Plurals

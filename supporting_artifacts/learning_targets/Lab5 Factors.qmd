@@ -1,8 +1,14 @@
 ---
 title: "Lab5 Factors"
-format: html
-editor: visual
----tt
+author: "Jamie Thompson"
+format: 
+  html: 
+    self-contained: true
+    code-fold: show
+    code-tools: true
+title-block-banner: true
+title-block-banner-color: "light blue"
+toc: true
 ---
 
 # Setup
@@ -16,8 +22,9 @@ library(tidyverse)
 
 ```{r}
 #| message: false
-surveys <- read_csv(here::here("Week 2", 
-                               "Lab2", 
+surveys <- read_csv(here::here("supporting_artifacts",
+                               "learning_targets", 
+                               "Data", 
                                "surveys.csv")
                     )
 ```

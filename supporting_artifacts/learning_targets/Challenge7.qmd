@@ -2,6 +2,7 @@
 title: "Challenge 7"
 format: 
   html: 
+    self-contained: true
     code-fold: show
     code-tools: true
 title-block-banner: true
@@ -21,8 +22,9 @@ library(tidyverse)
 ### Loading in the Data
 
 ```{r}
-BlackfootFish <- read.csv(here::here("Week 7",
-                                     "Lab7",
+BlackfootFish <- read.csv(here::here("supporting_artifacts",
+                                     "learning_targets", 
+                                     "Data",
                                      "BlackfootFish.csv")
                           )
 ```
@@ -137,9 +139,10 @@ Testing my function I made a small dataset of numbers I would know the output fo
 
 ```{r}
 # dataset created to test my condition_index() funciton
-index_test_data <- read.csv(here::here("Week 7",
-                                     "Lab7",
-                                     "index_test.csv")
+index_test_data <- read.csv(here::here("supporting_artifacts", 
+                                       "learning_targets", 
+                                       "Data", 
+                                       "index_test.csv")
                           )
 
 # testing my function! 
