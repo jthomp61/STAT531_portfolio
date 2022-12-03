@@ -1,0 +1,272 @@
+---
+title: "Challenge 7"
+format: 
+  html: 
+    self-contained: true
+    code-fold: show
+    code-tools: true
+title-block-banner: true
+title-block-banner-color: "light blue"
+toc: true
+editor: visual
+---
+
+### Setup
+
+```{r}
+#| message: false
+library(ggridges)
+library(tidyverse)
+```
+
+### Loading in the Data
+
+```{r}
+BlackfootFish <- read.csv(here::here("supporting_artifacts",
+                                     "extented-learning", 
+                                     "Data",
+                                     "BlackfootFish.csv")
+                          )
+```
+
+## Notes of Progression!
+
+Going though this challenge was a discovery, I could have gone back to previous steps and parts to account for what I discovered along the way, however, I left it as is to represent my thought process and my progression to my discoveries.
+
+## **Part 1**
+
+### Fish Research
+
+After doing some research on 'typical' lengths of trout, I determined trout are around 20 - 30 inches (508 - 762 mm long) long in open water, 8 or 9 inches (203.2 - 228.6 mm) long in stream. The maximum length on record being 40.5 inches (1028.7 mm) for bull trout, 34 inches (863.6 mm) for brown trout, and 42 in (1066.8 mm) for rainbow trout.
+
+The typical weight for a trout is 4-8lbs (1814.4 - 3628.7 g). World record of weight for a bull trout is 32 lbs (14515 g) , 42lbs for brown trout (19050.9 g), and 48 lbs (21772.4 g) for rainbow trout.
+
+The `BlackfootFish` dataset `length` variable appears to be in millimeters. For the purpose of this study, I'll say the maximum length of trout is 900, and the minimum is ... **this is where I begin to question this method.** The dataset has a lot of small fish data, of 20 - 30 mm (0.79 - 1.8 inch) fish. Which leads me to believe repeated reporting of this size fish cannot be a mistake. However, a lot of those do not have an associated weight (either they are NA or make no sense/way too high). I picked a minimum value of 50mm which seemed to be the most reasonable.
+
+### Visualization of Weight vs Length
+
+I decided to plot the weight vs the length to visualize the points that seem unreasonable.
+
+```{r}
+ggplot(BlackfootFish, mapping = aes(x = weight, y = length)
+       ) +
+  geom_point(na.rm = TRUE) 
+```
+
+Seen in the graph, there appears to be many fish that have a small length and way too high weight as well as an impossible wight in reference to length. To transform this data to fit a linear curve and better evaluate the outlier data I cubed the y variable (learned in my regression class):
+
+```{r}
+ggplot(BlackfootFish, mapping = aes(x = weight, y = (length)^3)
+       ) +
+  geom_point(na.rm = TRUE) 
+```
+
+### **Replacing Impossible Measurements with `NA`s**
+
+#### Function Creation:
+
+Based on my research, I decided on a max and min length of 900mm and 50mm respectively, and a max and min weight of 5000g and 5g respectively.
+
+I created a function called `remove_impossible()` that accepts three inputs:
+
+1.  a vector of measurements
+2.  the minimum value believed is "reasonable"
+3.  the maximum value believed is "reasonable."
+
+If a value falls outside these bounds, they get replaced with an `NA`. In the code chunk below, I also test the function on a simple vector.
+
+```{r}
+remove_impossible <- function(vect, maximum, minimum) {
+  stopifnot(is.double(vect))
+
+ case_when(
+   vect < minimum ~ NA_real_,
+   vect > maximum ~ NA_real_,
+   TRUE ~ vect
+ )
+}
+
+#Testing my function! 
+remove_impossible(as.double(0:10), minimum = 3, maximum = 7)
+
+```
+
+#### Utilizing Function:
+
+Now I will use this function to modify the `length` and `weight` columns of the `BlackfootFish` dataset.
+
+```{r}
+cleaned_BlackfootFish <- BlackfootFish |> 
+  mutate(across(.cols = length:weight, 
+                .fns = as.double),
+         length = remove_impossible(length, maximum = 900, minimum = 50),
+         weight = remove_impossible(weight, maximum = 5000, minimum = 5)
+         )
+
+# graphing the cleaned dataset to see if the outlier data has been removed.
+ggplot(cleaned_BlackfootFish, mapping = aes(x = weight, y = (length)^3)
+       ) +
+  geom_point(na.rm = TRUE)
+```
+
+Evaluated in the graph above, there still appears to be unreasonable outlying data points. However, there really is not a way to remove them utilizing this method.
+
+### Function Creation:
+
+I created a function called `condition_index()` that accepts three inputs:
+
+1.  a dataset
+2.  a variable name representing weight(g)
+3.  a variable name representing length(mm)
+
+```{r}
+condition_index <- function(data, weight, length) {
+  stopifnot(is.data.frame(data))
+  warning("weight must be in grams and length must be in milimeters")
+  
+  alt_data <- data |> 
+    mutate(cond_indx = (( {{ weight }} / {{ length }}^3 ) * 100)
+    )
+  return(alt_data)
+}
+```
+
+### Testing Function:
+
+Testing my function I made a small dataset of numbers I would know the output for after the condition index is calculated. I intentionally made the warning show for the test, a reminder for whomever follows this document later, that to calculate the condition index properly, those values need to be in those units.
+
+```{r}
+# dataset created to test my condition_index() funciton
+index_test_data <- read.csv(here::here("supporting_artifacts", 
+                                       "extented-learning", 
+                                       "Data", 
+                                       "index_test.csv")
+                          )
+
+# testing my function! 
+condition_index(index_test_data, 
+                weight = col1, 
+                length = col2)
+```
+
+```{r}
+#| echo: false
+remove(index_test_data)
+```
+
+Success!!
+
+### Utilizing Function with the Dataset
+
+Now lets calculate the condition index on the `Rescaled_BlackfootFish` dataset.
+
+```{r}
+#| warning: false
+CI_cleaned_BlackfootFish <- 
+  condition_index(cleaned_BlackfootFish, 
+                  weight = weight,
+                  length = length)
+```
+
+#### \--DISCOVERY\--
+
+During my research on what a 'condition index' is, I discovered that the trout industry actually likes to use cm as the length measurement and not mm. I think that will make understanding the condition index variable easier because the values will not be so tiny and on a more understandable range. I make that change below:
+
+```{r}
+CI_cleaned_BlackfootFish <- CI_cleaned_BlackfootFish |> 
+  mutate(cond_indx = cond_indx * 1000)
+```
+
+In my research, I found a trout with a condition index (using grams and cm's as units of measurement), where:
+
+-   1 indicates an OK fish condition
+-   1.2 to 1.5 indicates a really fat fish
+-   below 0.8 indicates a severely skinny fish
+
+<https://globalflyfisher.com/fish-better/fultons-condition-factor-calculator>
+
+Now, evaluating the condition index data, the maximum is 37, and the minimum is 0.0023... there are 1152 fish that are below the 0.8 and 624 fish above 1.5 (there is hidden code revealing this). Since the amount of observations is 18352, I don't think it will impact the data much to remove those data points. So, to make this data make more sense in the fishy world, THIS is what I am going to:
+
+-   use my `remove_impossible()` function to remove impossible condition index values with the maximum being 1.5 and the minimum being 0.8.
+
+```{r}
+#| eval: false
+#| echo: false
+# max and min of condition index: 
+c(min(CI_cleaned_BlackfootFish$cond_indx, na.rm = TRUE),
+  max(CI_cleaned_BlackfootFish$cond_indx, na.rm = TRUE)
+  )
+
+# checking how many datapoints are below 0.8
+below_0.8 <- if_else(CI_cleaned_BlackfootFish$cond_indx < 0.8,
+                     TRUE,
+                     FALSE)
+sum(below_0.8, na.rm = TRUE)
+
+remove(below_0.8)
+
+# checking how many datapoints are above 1.5
+above_1.5 <- if_else(CI_cleaned_BlackfootFish$cond_indx > 1.5,
+                     TRUE,
+                     FALSE)
+sum(above_1.5, na.rm = TRUE)
+
+remove(above_1.5)
+```
+
+```{r}
+CI_cleaned_BlackfootFish <- CI_cleaned_BlackfootFish |> 
+  mutate(cond_indx = remove_impossible(cond_indx, 
+                                       maximum = 1.5, 
+                                       minimum = 0.8)
+         )
+```
+
+## **All Part 3**
+
+### Visualizing the Condition Index of Trout
+
+Now that we have cleaned dataset with reasonable condition index values here is a visualization of the condition indexes of fishes captured throughout the study.
+
+```{r}
+#| message: false
+ggplot(CI_cleaned_BlackfootFish, 
+       mapping = aes(x = cond_indx, y = as.factor(year))
+       ) +
+  geom_density_ridges(na.rm = TRUE,
+                      rel_min_height = 0.0001, 
+                      scale = 0.95) + 
+  labs(x = "Condition Index", 
+       y = "Year")
+```
+
+Here is a histogram for condition index overall, and not based on year!
+
+```{r}
+#| message: false
+ggplot(CI_cleaned_BlackfootFish, 
+       mapping = aes(x = cond_indx)
+       ) +
+  geom_histogram(na.rm = TRUE) +
+  labs(x = "Condition Index", 
+       y = "Count/Number of Trout")
+```
+
+#### ---Bonus---
+
+Also as a bonus, here is the scatter plot of all the removed data points that did not make sense:
+
+```{r}
+#| layout-ncol: 2
+CI_cleaned_BlackfootFish |> 
+  na.omit() |> 
+  ggplot(mapping = aes(x = weight, y = length)
+       ) +
+  geom_point()
+
+CI_cleaned_BlackfootFish |> 
+  na.omit() |> 
+  ggplot(mapping = aes(x = weight, y = length^3)
+       ) +
+  geom_point()
+```

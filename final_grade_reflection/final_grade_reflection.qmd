@@ -1,7 +1,9 @@
 ---
 title: "Final Grade Reflection"
 author: "Jamie Thompson"
-format: pdf
+format: 
+  pdf: 
+    self-contained: true
 layout: margin-left
 geometry:
   - top = 20mm

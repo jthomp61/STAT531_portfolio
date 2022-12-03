@@ -168,10 +168,12 @@ Avos_Homes_Avgs
 This graph shows homes with a higher price value (San Fransico and San Diego) also have lower avocado volume sales. LA at the time (2015-2018) had the second lowest housing cost and the most avocado sales. It would have been cool to also look at population density also, to get average inference on how much a person spends on avocados per year. Then compare that to how much a house is or even a down payment for those areas. For now, I can't really tell if avocado buying is impeding house sales.
 
 ```{r}
-ggplot(data = Avos_Homes_Avgs, mapping = aes(x = Avg_Avos_Sold, y = mean_home_price)) + 
+ggplot(data = Avos_Homes_Avgs, mapping = aes(x = Avg_Avos_Sold, y = mean_home_price, color = city)) + 
   geom_point() 
   
 ```
+
+### Visualizaiton Before Revision: 
 
 ```{r}
 ggplot(data = Avos_Homes_Avgs, mapping = aes(x = city)) + 
