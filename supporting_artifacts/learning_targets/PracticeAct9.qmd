@@ -128,21 +128,31 @@ sum(fake_data_trombone < 4)
 
 You manage to intercept a shipping notice for delivery to Professor Hill. It says the following:
 
-Wells Fargo Shipment 1957
+""
 
-To: Harold Hill, Mason City, Iowa From: Music Factory, Gary, Indiana
+`Wells Fargo Shipment 1957`
 
-Items included: Trombones: 76 Cornets: 110 Saxophones: 542 Clarinets: 318 Bassoons: 175
+`To: Harold Hill, Mason City, Iowa From: Music Factory, Gary, Indiana`
 
-Total Shipped Weight: 4532 lbs.
+`Items included:`
+
+-   `Trombones: 76`
+-   `Cornets: 110`
+-   `Saxophones:`
+-   `542 Clarinets:`
+-   `318 Bassoons: 175`
+
+`Total Shipped Weight: 4532 lbs.`
+
+""
 
 This is your chance to catch Professor Hill in his lie!
 
-First, write a function that samples the correct number of weights of trombones, cornets (trumpets), and reed instruments (saxophones, clarinets, bassoons), and then returns the total weight of the shipment.
+-   First, write a function that samples the correct number of weights of trombones, cornets (trumpets), and reed instruments (saxophones, clarinets, bassoons), and then returns the total weight of the shipment.
 
-Then, use that function to create random samples of the total weight of 1000 possible shipments.
+-   Then, use that function to create random samples of the total weight of 1000 possible shipments.
 
-(Some code is provided for you below. Do not change the seed!)
+## [Evidence 1]{.underline}
 
 ```{r}
 music_man <- function(n_tromb, n_cor, n_reed){

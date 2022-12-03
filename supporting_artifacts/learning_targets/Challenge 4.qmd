@@ -12,7 +12,7 @@ toc: true
 editor: visual
 ---
 
-# Set Up
+### Set Up
 
 ```{r}
 #| message: false
@@ -21,7 +21,7 @@ library(ggridges)
 library(tidyverse)
 ```
 
-# Load in Data
+## [**Evidence 1**]{.underline}**:** Load in Data
 
 ```{r}
 #| message: false
@@ -83,6 +83,8 @@ avos_clean <- avos |>
 # the only three columns I will need
 ```
 
+## [**Evidence 2**]{.underline}
+
 ### Cleaning Homes Data Set:
 
 I isolated out only the years that the avocado study looked at so the information on prices and sales rates from both data sets are from roughly the same time. I also removed the `Day` column created because when loading in the data set, it changed the date format and gave it a day - it didn't originally have that in the `.xls` file.
@@ -126,6 +128,9 @@ homes_clean <- homes |>
 Creating the joined data set:
 
 1.  First I tried joined the cleaned data sets normally, however this... created a monster. It had tons of new rows. I think it duplicated the home price for EVERY row in the left data set (which was the Avo one. Ending up with about 190,000 rows.... I tried `copy = FALSE` but that did nothing.
+
+## [**Evidence 3**]{.underline}
+
 2.  Then I joining the data set by the 4 city regions [with averages]{.underline} (means) of total volume sold of avocados, average price of avocados, and average price of homes. This worked well!
 
 ```{r Joining_Averages}
@@ -164,7 +169,7 @@ This graph shows homes with a higher price value (San Fransico and San Diego) al
 
 ```{r}
 ggplot(data = Avos_Homes_Avgs, mapping = aes(x = Avg_Avos_Sold, y = mean_home_price)) + 
-  geom_point()
+  geom_point() 
   
 ```
 

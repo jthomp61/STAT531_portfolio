@@ -2631,7 +2631,10 @@ color: light blue;
   <li><a href="#practice-activity-9.2-simulation" id="toc-practice-activity-9.2-simulation" class="nav-link" data-scroll-target="#practice-activity-9.2-simulation"><strong>Practice Activity 9.2: Simulation</strong></a></li>
   <li><a href="#remember" id="toc-remember" class="nav-link" data-scroll-target="#remember"><strong>1 Remember</strong></a></li>
   <li><a href="#warm-up" id="toc-warm-up" class="nav-link" data-scroll-target="#warm-up"><strong>2 Warm-up</strong></a></li>
-  <li><a href="#catching-a-con" id="toc-catching-a-con" class="nav-link" data-scroll-target="#catching-a-con"><strong>3 Catching a Con</strong></a></li>
+  <li><a href="#catching-a-con" id="toc-catching-a-con" class="nav-link" data-scroll-target="#catching-a-con"><strong>3 Catching a Con</strong></a>
+  <ul class="collapse">
+  <li><a href="#evidence-1" id="toc-evidence-1" class="nav-link" data-scroll-target="#evidence-1"><u>Evidence 1</u></a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -2797,21 +2800,33 @@ color: light blue;
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fake_data_trombone <span class="sc">&lt;</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 18</code></pre>
+<pre><code>[1] 24</code></pre>
 </div>
 </div>
 </section>
 <section id="catching-a-con" class="level1">
 <h1><strong>3 Catching a Con</strong></h1>
 <p>You manage to intercept a shipping notice for delivery to Professor Hill. It says the following:</p>
-<p>Wells Fargo Shipment 1957</p>
-<p>To: Harold Hill, Mason City, Iowa From: Music Factory, Gary, Indiana</p>
-<p>Items included: Trombones: 76 Cornets: 110 Saxophones: 542 Clarinets: 318 Bassoons: 175</p>
-<p>Total Shipped Weight: 4532 lbs.</p>
+<p>“”</p>
+<p><code>Wells Fargo Shipment 1957</code></p>
+<p><code>To: Harold Hill, Mason City, Iowa From: Music Factory, Gary, Indiana</code></p>
+<p><code>Items included:</code></p>
+<ul>
+<li><code>Trombones: 76</code></li>
+<li><code>Cornets: 110</code></li>
+<li><code>Saxophones:</code></li>
+<li><code>542 Clarinets:</code></li>
+<li><code>318 Bassoons: 175</code></li>
+</ul>
+<p><code>Total Shipped Weight: 4532 lbs.</code></p>
+<p>“”</p>
 <p>This is your chance to catch Professor Hill in his lie!</p>
-<p>First, write a function that samples the correct number of weights of trombones, cornets (trumpets), and reed instruments (saxophones, clarinets, bassoons), and then returns the total weight of the shipment.</p>
-<p>Then, use that function to create random samples of the total weight of 1000 possible shipments.</p>
-<p>(Some code is provided for you below. Do not change the seed!)</p>
+<ul>
+<li><p>First, write a function that samples the correct number of weights of trombones, cornets (trumpets), and reed instruments (saxophones, clarinets, bassoons), and then returns the total weight of the shipment.</p></li>
+<li><p>Then, use that function to create random samples of the total weight of 1000 possible shipments.</p></li>
+</ul>
+<section id="evidence-1" class="level2">
+<h2 class="anchored" data-anchor-id="evidence-1"><u>Evidence 1</u></h2>
 <div class="cell">
 <details open>
 <summary>Code</summary>
@@ -2844,6 +2859,7 @@ color: light blue;
 <p>How many of these samples had a weight less than Prof. Hill’s shipment? Do you believe Professor Hill is lying, or not?</p>
 <!-- -->
 
+</section>
 </section>
 
 </main>
@@ -3127,47 +3143,57 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-146"><a href="#cb18-146" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a>You manage to intercept a shipping notice for delivery to Professor Hill. It says the following:</span>
 <span id="cb18-148"><a href="#cb18-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-149"><a href="#cb18-149" aria-hidden="true" tabindex="-1"></a>Wells Fargo Shipment 1957</span>
+<span id="cb18-149"><a href="#cb18-149" aria-hidden="true" tabindex="-1"></a>&quot;&quot;</span>
 <span id="cb18-150"><a href="#cb18-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-151"><a href="#cb18-151" aria-hidden="true" tabindex="-1"></a>To: Harold Hill, Mason City, Iowa From: Music Factory, Gary, Indiana</span>
+<span id="cb18-151"><a href="#cb18-151" aria-hidden="true" tabindex="-1"></a><span class="in">`Wells Fargo Shipment 1957`</span></span>
 <span id="cb18-152"><a href="#cb18-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-153"><a href="#cb18-153" aria-hidden="true" tabindex="-1"></a>Items included: Trombones: 76 Cornets: 110 Saxophones: 542 Clarinets: 318 Bassoons: 175</span>
+<span id="cb18-153"><a href="#cb18-153" aria-hidden="true" tabindex="-1"></a><span class="in">`To: Harold Hill, Mason City, Iowa From: Music Factory, Gary, Indiana`</span></span>
 <span id="cb18-154"><a href="#cb18-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-155"><a href="#cb18-155" aria-hidden="true" tabindex="-1"></a>Total Shipped Weight: 4532 lbs.</span>
+<span id="cb18-155"><a href="#cb18-155" aria-hidden="true" tabindex="-1"></a><span class="in">`Items included:`</span></span>
 <span id="cb18-156"><a href="#cb18-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-157"><a href="#cb18-157" aria-hidden="true" tabindex="-1"></a>This is your chance to catch Professor Hill in his lie!</span>
-<span id="cb18-158"><a href="#cb18-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a>First, write a function that samples the correct number of weights of trombones, cornets (trumpets), and reed instruments (saxophones, clarinets, bassoons), and then returns the total weight of the shipment.</span>
-<span id="cb18-160"><a href="#cb18-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-161"><a href="#cb18-161" aria-hidden="true" tabindex="-1"></a>Then, use that function to create random samples of the total weight of 1000 possible shipments.</span>
+<span id="cb18-157"><a href="#cb18-157" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`Trombones: 76`</span></span>
+<span id="cb18-158"><a href="#cb18-158" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`Cornets: 110`</span></span>
+<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`Saxophones:`</span></span>
+<span id="cb18-160"><a href="#cb18-160" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`542 Clarinets:`</span></span>
+<span id="cb18-161"><a href="#cb18-161" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`318 Bassoons: 175`</span></span>
 <span id="cb18-162"><a href="#cb18-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-163"><a href="#cb18-163" aria-hidden="true" tabindex="-1"></a>(Some code is provided for you below. Do not change the seed!)</span>
+<span id="cb18-163"><a href="#cb18-163" aria-hidden="true" tabindex="-1"></a><span class="in">`Total Shipped Weight: 4532 lbs.`</span></span>
 <span id="cb18-164"><a href="#cb18-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-167"><a href="#cb18-167" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-168"><a href="#cb18-168" aria-hidden="true" tabindex="-1"></a>music_man <span class="ot">&lt;-</span> <span class="cf">function</span>(n_tromb, n_cor, n_reed){</span>
-<span id="cb18-169"><a href="#cb18-169" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a>  trombones <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_tromb, <span class="at">mean =</span> <span class="fl">4.6</span>, <span class="at">sd =</span> <span class="fl">0.8</span>)</span>
-<span id="cb18-171"><a href="#cb18-171" aria-hidden="true" tabindex="-1"></a>  cornets <span class="ot">&lt;-</span> <span class="fu">runif</span>(n_cor, <span class="at">min =</span> <span class="fl">1.5</span>, <span class="at">max =</span> <span class="fl">3.5</span>)</span>
-<span id="cb18-172"><a href="#cb18-172" aria-hidden="true" tabindex="-1"></a>  reeds <span class="ot">&lt;-</span> <span class="fu">rchisq</span>(n_reed, <span class="at">df =</span> <span class="dv">4</span>)</span>
-<span id="cb18-173"><a href="#cb18-173" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-174"><a href="#cb18-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(trombones, cornets, reeds))</span>
-<span id="cb18-175"><a href="#cb18-175" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-176"><a href="#cb18-176" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-177"><a href="#cb18-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-178"><a href="#cb18-178" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1957</span>)</span>
-<span id="cb18-179"><a href="#cb18-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-180"><a href="#cb18-180" aria-hidden="true" tabindex="-1"></a>my_weights <span class="ot">&lt;-</span> <span class="fu">rerun</span>(<span class="at">.n =</span> <span class="dv">1000</span>, </span>
-<span id="cb18-181"><a href="#cb18-181" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">music_man</span>(<span class="at">n_tromb =</span> <span class="dv">76</span>, </span>
-<span id="cb18-182"><a href="#cb18-182" aria-hidden="true" tabindex="-1"></a>                              <span class="at">n_cor =</span> <span class="dv">110</span>,</span>
-<span id="cb18-183"><a href="#cb18-183" aria-hidden="true" tabindex="-1"></a>                              <span class="at">n_reed =</span> (<span class="dv">1035</span>)</span>
-<span id="cb18-184"><a href="#cb18-184" aria-hidden="true" tabindex="-1"></a>                              )</span>
-<span id="cb18-185"><a href="#cb18-185" aria-hidden="true" tabindex="-1"></a>                    ) <span class="sc">|&gt;</span> </span>
-<span id="cb18-186"><a href="#cb18-186" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flatten_dbl</span>()</span>
+<span id="cb18-165"><a href="#cb18-165" aria-hidden="true" tabindex="-1"></a>&quot;&quot;</span>
+<span id="cb18-166"><a href="#cb18-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-167"><a href="#cb18-167" aria-hidden="true" tabindex="-1"></a>This is your chance to catch Professor Hill in his lie!</span>
+<span id="cb18-168"><a href="#cb18-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-169"><a href="#cb18-169" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>First, write a function that samples the correct number of weights of trombones, cornets (trumpets), and reed instruments (saxophones, clarinets, bassoons), and then returns the total weight of the shipment.</span>
+<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-171"><a href="#cb18-171" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Then, use that function to create random samples of the total weight of 1000 possible shipments.</span>
+<span id="cb18-172"><a href="#cb18-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-173"><a href="#cb18-173" aria-hidden="true" tabindex="-1"></a><span class="fu">## [Evidence 1]{.underline}</span></span>
+<span id="cb18-174"><a href="#cb18-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-177"><a href="#cb18-177" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-178"><a href="#cb18-178" aria-hidden="true" tabindex="-1"></a>music_man <span class="ot">&lt;-</span> <span class="cf">function</span>(n_tromb, n_cor, n_reed){</span>
+<span id="cb18-179"><a href="#cb18-179" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-180"><a href="#cb18-180" aria-hidden="true" tabindex="-1"></a>  trombones <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_tromb, <span class="at">mean =</span> <span class="fl">4.6</span>, <span class="at">sd =</span> <span class="fl">0.8</span>)</span>
+<span id="cb18-181"><a href="#cb18-181" aria-hidden="true" tabindex="-1"></a>  cornets <span class="ot">&lt;-</span> <span class="fu">runif</span>(n_cor, <span class="at">min =</span> <span class="fl">1.5</span>, <span class="at">max =</span> <span class="fl">3.5</span>)</span>
+<span id="cb18-182"><a href="#cb18-182" aria-hidden="true" tabindex="-1"></a>  reeds <span class="ot">&lt;-</span> <span class="fu">rchisq</span>(n_reed, <span class="at">df =</span> <span class="dv">4</span>)</span>
+<span id="cb18-183"><a href="#cb18-183" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-184"><a href="#cb18-184" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(trombones, cornets, reeds))</span>
+<span id="cb18-185"><a href="#cb18-185" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-186"><a href="#cb18-186" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb18-187"><a href="#cb18-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-188"><a href="#cb18-188" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(my_weights <span class="sc">&lt;</span> <span class="dv">4532</span>)</span>
-<span id="cb18-189"><a href="#cb18-189" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-190"><a href="#cb18-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-191"><a href="#cb18-191" aria-hidden="true" tabindex="-1"></a>How many of these samples had a weight less than Prof. Hill&#39;s shipment? Do you believe Professor Hill is lying, or not?</span>
+<span id="cb18-188"><a href="#cb18-188" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1957</span>)</span>
+<span id="cb18-189"><a href="#cb18-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-190"><a href="#cb18-190" aria-hidden="true" tabindex="-1"></a>my_weights <span class="ot">&lt;-</span> <span class="fu">rerun</span>(<span class="at">.n =</span> <span class="dv">1000</span>, </span>
+<span id="cb18-191"><a href="#cb18-191" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">music_man</span>(<span class="at">n_tromb =</span> <span class="dv">76</span>, </span>
+<span id="cb18-192"><a href="#cb18-192" aria-hidden="true" tabindex="-1"></a>                              <span class="at">n_cor =</span> <span class="dv">110</span>,</span>
+<span id="cb18-193"><a href="#cb18-193" aria-hidden="true" tabindex="-1"></a>                              <span class="at">n_reed =</span> (<span class="dv">1035</span>)</span>
+<span id="cb18-194"><a href="#cb18-194" aria-hidden="true" tabindex="-1"></a>                              )</span>
+<span id="cb18-195"><a href="#cb18-195" aria-hidden="true" tabindex="-1"></a>                    ) <span class="sc">|&gt;</span> </span>
+<span id="cb18-196"><a href="#cb18-196" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flatten_dbl</span>()</span>
+<span id="cb18-197"><a href="#cb18-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-198"><a href="#cb18-198" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(my_weights <span class="sc">&lt;</span> <span class="dv">4532</span>)</span>
+<span id="cb18-199"><a href="#cb18-199" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-200"><a href="#cb18-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-201"><a href="#cb18-201" aria-hidden="true" tabindex="-1"></a>How many of these samples had a weight less than Prof. Hill&#39;s shipment? Do you believe Professor Hill is lying, or not?</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

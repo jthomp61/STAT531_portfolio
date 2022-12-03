@@ -2,128 +2,105 @@
 title: "Final Grade Reflection"
 author: "Jamie Thompson"
 format: pdf
+layout: margin-left
+geometry:
+  - top = 20mm
+  - left = 20mm
+  - right = 20mm
+  - bottom = 20mm
+  - heightrounded
 editor: visual
 ---
 
-My Grade: I believe my grade equivalent to course work evidenced below to be an A.
+[**My Grade:**]{.underline} I believe my grade equivalent to course work evidenced below to be an A.
 
--   **WD-1:** I can import data from a variety of formats (e.g., csv, xlsx, txt, etc.).
+::: {layout-ncol="2" layout-align="left"}
+[**Learning Objective Evidence:**]{.underline}
 
-    -   Challenge 4 Load in the Data
+**WD-6:** Lab 4, Evidence 1
 
--   **WD-2:** I can select necessary columns from a dataset.
+**WD-1:** Challenge 4, Evidence 1
 
-    -   Challenge 4 Cleaning Homes Dataset
+**WD-2:** Challenge 4, Evidence 2
 
--   **WD-3:** I can filter rows from a dataframe for a variety of data types (e.g., numeric, integer, character, factor, date).
+**WD-3:** Challenge 4, Evidence 2
 
-    -   Challenge 4 Cleaning Homes Dataset
+**WD-5:** Challenge 4, Evidence 3
 
--   **WD-4: I can modify existing variables and create new variables in a dataframe for a variety of data types (e.g., numeric, integer, character, factor, date).**
+**DVS-5:** Challenge 4, Evidence 3
 
-    -   modify existing variables lab 9 part 5 question 3
-    -   
+**DVS-1:** Lab 5, Evidence 1 &
 
--   **WD-5: I can use mutating joins to combine multiple dataframes.**
+**DVS-2:** Lab 5, Evidence 1
 
-    -   challenge 4 question 2
+**R-2:** All of challenge 7
 
--   **WD-6: I can use filtering joins to filter rows from a dataframe.**
+**PE-4:** All of challenge 7
 
-    -   lab 4 creating regions dataset
+**WD-4:** Challenge 7, Evidence 1 &
 
--   **WD-7: I can pivot dataframes from long to wide and visa versa**
+**DVS-1:** Challenge 7, Evidence 2 &
 
-    -   Challenge 3
+**PE-2:** Lab 8, Evidence 1
 
-    -   lab 9 part 5 question 3
+**PE-3:** Lab 8, Evidence 1
 
--   **R-1:** I can create a professional looking, reproducible analysis using RStudio projects, Quarto documents, and the here package.
+**DSM-1:** PA 9, Evidence 1
 
-    -   All of lab 9
+**R-1:** All of Lab 9
 
--   **R-2:** I can write well documented and tidy code.
+**R-3:** All of Lab 9
 
-    -   all of challenge 7
+**DVS-7:** Lab 9, Evidence 1
 
--   **R-3:** I can write robust programs that are resistant to changes in inputs.
+**DVS-4:** Lab 9, Evidence 2
 
-    -   all of lab 9
+**DSM-2:** Lab 9, Evidence 3
 
--   **DVS-1:** I can create visualizations for a variety of variable types**.**
+**DVS-3:** Lab 9, Evidence 4
 
-    -   Lab 5 part 2 question 4 (line plots for categorical variables)
+**DVS-6:** Lab 9, Evidence 4
 
-    -   
+**PE-1:** Lab 9, Evidence 4
 
--   **DVS-2:** I use plot modifications to make my visualization clear to the reader.
+**WD-4:** Lab 9, Evidence 5 &
 
-    -   Lab 5 part 2 question 4
+**WD-7:** Lab 9, Evidence 5
+:::
 
--   **DVS-3:** I show creativity in my visualizations
+-   *How I accomplished 2 columns <https://quarto.org/docs/authoring/figures.html>*
 
-    -   lab 9 part 5 question 1
+[**Additional Evidence:**]{.underline}
 
--   **DVS-4:** I can calculate numerical summaries of variables.
+I have invested a lot of time and effort into this class and I believe it shows.
 
-    -   lab 9 part 3 question 3
+First, I have achieved S marks an nearly all my assignments expect for 1, as well as have submitted a majority of my assignments on time (except for a few preview activities).
 
--   **DVS-5:** I can find summaries of variables across multiple groups.
+Second, I have extended my thinking on all my challenge problems, taking what I learned in class and finding solutions to those novel problems by experimenting and trying different approaches even if my end result didn't quite work out. When that happened, I would ask for help in my assignment and revise it next week with the suggestions given.
 
-    -   Challenge 4 question 2
+-   [**Extended Thinking Evidence:**]{.underline}
+    -   Challenge 4 **REVISED** for portfolio
 
--   **DVS-6:** I can create tables which make my summaries clear to the reader.
+    -   Challenge 7
 
-    -   lab 9 part 5 question 1
+    -   Lab 8 (styling the song)
 
--   **DVS-7:** I show creativity in my tables.
+    -   Lab 9 (after table formatting)
 
-    -   lab 9 part 3 question 2
+Third, as briefly mentioned in my second point I have demonstrated revising of my thinking. Whenever I received feedback to revise my assignment I would. Most of the time they were small revisions of me misinterpreting a question or not using something correctly. I did have one revision during week 7 for Lab 7 where I used a superseded function, and remembered i needed to check that before I use a function I find. Also in that assignment I received feedback of redundancy, and remebered I could make a temp variable in a function or calculation so I do not have to repeat lines of code (and thus having that repeated line of code run multiple times to get the same calculation). This is imaged below!
 
--   **PE-1:** I can write concise code which does not repeat itself.
+::: {layout-ncol="2"}
+![](images/Screenshot%202022-12-03%20at%208.47.15%20AM.png)
 
-    -   lab 9 part 5 question 1
+![](images/Screenshot%202022-12-03%20at%208.47.40%20AM.png)
+:::
 
--   **PE-2:** I can write functions to reduce repetition in my code.
+Forth, I have demonstrated contributions to the classroom and my team. I was present for class and came prepared for class each week by doing the preview activities at least before each class. I also asked questions on behalf of my team and for myself when needed. Outside of class, I answered questions and gave helpful information on discord when I was able (see images below). As well as answer questions to my group members via a group chat whenever they had questions.
 
-    -   lab 8 part 2
+<div>
 
--   **PE-3:** I can use iteration to reduce repetition in my code.
+![](images/Screenshot%202022-12-03%20at%208.14.56%20AM-02.png)
 
-    -   lab 8 part 2
+![](images/Screenshot%202022-12-03%20at%209.10.50%20AM.png)
 
--   **PE-4: I can use modern tools when carrying out my analysis.**
-
--   **DSM-1:** I can simulate data from a variety of probability models.
-
-    -   Practice activity 9
-
--   **DSM-2:** I can fit a linear regression and extract necessary summary measures.
-
-    -   lab 9 all of step 4
-
-1.  **What else?** There may be some other criteria that figures into your grade request that isn't explicitly listed in the syllabus. If so, state the criteria you're thinking of, explain why they are useful criteria for your grade determination, and then explain how well you met those criteria (and provide evidence in the artifacts, if applicable). As with the syllabus criteria, be focused, specific, and thorough --- and refer to specific artifacts that provide evidence.
-
-## Continued Learning
-
-\(1\) choose Challenge assignments which demonstrate evidence of how you extended what you learned in class, and (2) choose problems where you were required to submit revisions. Your revised problems should include a description of how you revised your thinking when completing the revision.
-
-I have demonstrated a commitment to my continued learning by attempting every challenge so far. **Challenge4**
-
-\>\>\>\>\> from last reflection
-
-... by extending my thinking from what I learned in class though lab and challenge problems by attempting everything and adding flare if I find something interesting. So far, I have earned S marks on all my assignments and have not had a chance to demonstrate my ability to revise my thinking. However, for this week's lab assignment I am implementing feedback given from the previous week to further bolster my plots.
-
-\<\<\<\<\<\<
-
-## Contribution to the Classroom and my Team Community
-
-...to be finished... add screen shots of code used to assist team members and discord
-
-\>\>\>\>\> from last reflection
-
-I try to encourage others and ask how they are doing on assignments via group chat to make sure no one is being left behind. However, for our Tuesday group assignments I could try to be a better recorder/reporter although it is difficult to find the time to record our group session as we go.
-
-I do feel I have been going toward my goals I have set at the beginning of the class, learning how to use rStudio, make documents, and take data and turn it into easy visualizations and tables. Overall, I have been really enjoying the class and playing around with the quarto docs and coding with r. It is very satisfying figuring out how to get exactly what you want with some code that is easy to understand.
-
-\<\<\<\<\<\<
+</div>

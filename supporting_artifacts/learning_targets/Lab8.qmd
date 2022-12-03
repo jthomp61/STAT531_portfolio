@@ -12,7 +12,7 @@ toc: true
 editor: visual
 ---
 
-NOTE: Items I have altered form my Lab8 submission will be indicated with [\*\***Changed\*\***]{.underline}
+### Setup
 
 ```{r}
 #| message: false
@@ -23,7 +23,7 @@ library(stringr)
 library(purrr)
 ```
 
-Loading in the Dataset
+## Loading in the Data
 
 ```{r}
 #| message: false
@@ -75,6 +75,8 @@ purrr::map_chr(xmas$Gift.Item, pluralize_gift)
 
 ## Step Two: Creating sentences
 
+##  [Evidence 1]{.underline}
+
 Next I wrote a function called `make_phrase()` that takes as input the necessary information, and returns a phrase. For example,
 
     make_phrase(num_word = "ten", 
@@ -86,8 +88,6 @@ Next I wrote a function called `make_phrase()` that takes as input the necessary
 should return
 
     "ten lords a-leaping"
-
-[\*\***Changed\*\***]{.underline}
 
 ```{r phrase-function}
 make_phrase <- function(num_word, item, verb, adjective, location) {
@@ -158,8 +158,6 @@ should return
     two turtle doves and
     a partridge in a pear tree.
 
-[\*\***Changed\*\***]{.underline}
-
 ```{r}
 # Produces the string for one day of the song.
 # Arguments -- dataset -- A data frame containing information about gifts
@@ -173,18 +171,15 @@ sing_day <- function(dataset, line, phrase_col) {
   
   num_word <- english::ordinal(line)
   
-  ## Changed! Added a camma after Christmas
   intro <- glue::glue("On the {num_word} day of Christmas,")
   
   phrases <- dataset |>
     pull( {{phrase_col}} )
   
-  ## Changed! Added cammas before the new line and before 'and' 
   needed_phrases <- glue::glue_collapse(phrases[line:1], 
                                         sep = ",\n", 
                                         last = ", and \n")
 
-  ## Changed! Added a period at the end of the day phrase.
   glue::glue("{intro} my true love gave to me: \n {needed_phrases}.")
 
 }
@@ -213,8 +208,6 @@ Note that `.x` can be used exchangeably with `.` . We've used `.` for funct
 ## **1.2 Step Four: Use Your Functions!**
 
 Now I will run the following code to test out my functions! The output should be the lyrics for the entire 12 Days of Christmas song.
-
-[**\*\*Changed\*\***]{.underline}
 
 ```{r}
 xmas2 <- xmas |>

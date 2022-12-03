@@ -12,6 +12,8 @@ toc: true
 editor: visual
 ---
 
+### Setup
+
 ```{r}
 #| message: false
 
@@ -20,11 +22,11 @@ library(tidyverse)
 library(ggtext)
 ```
 
-## **1 The Data**
+## **The Data**
 
 The data in this lab contains many baby names and how many babies were named each name per each state over a set of years (1997 - 2014). At [this link](https://www.dropbox.com/sh/czm61yzmvzl6xfb/AABEFdpy02aNRhZ_vcxrVAQSa?dl=0), you can find the names for ALL 50 states, in separate datasets organized by first letter.
 
-## **2 Is Dr. Theobold's first name not cool any more?**
+#### **Question to be evaluated: Is Dr. Theobold's first name not cool any more?**
 
 For a majority of this lab, I will look at the name "Allison" and how it has changed over time. Since her name begins with "A", I downloaded the `StateNames_A.csv` and import in it below.
 
@@ -36,7 +38,7 @@ StateNames_A <- read.csv(here::here("supporting_artifacts",
                          )
 ```
 
-## **3 Summarizing & Visualizing the Number of Allisons**
+## **Summarizing & Visualizing the Number of Allison's**
 
 1.  First summary table asked: Number of female and males named 'Allison' per each state.
 
@@ -64,16 +66,16 @@ knitr::kable(StateAllison,
              caption = "Number of Babies named Allison per State.")
 ```
 
-2.  Adjustment of table above: Selecting only Female's because "Allison" is a name given overwhelmingly to babies assigned female at birth.
+## [Evidence 1]{.underline} (All of question 2)
 
-[**PROBLEMS**]{.underline} **Need Help!**
+2.  Adjustment of table above: Selecting only Female's because "Allison" is a name given overwhelmingly to babies assigned female at birth.
 
 There are two attempts at this below, both demonstrating issues. I wanted to make this table have two columns so it isn't as long.
 
 The fist attempt below just looks terrible, and is all I could find on the googles. I cant figure out how to get it to be aligned properly or fill the space pretty. In the book, it has `booktabs = TRUE, valign = 't'` however after removing and/or adding those things, they did nothing. You can try yourself by removing the `#` on the code.
 
 ```{r}
-
+# first attempt
 FemaleAllison <- StateAllison |> 
   select(State, Female) 
   
@@ -89,6 +91,7 @@ This next attempt looks great! However no matter what I tried, the caption will 
 #| layout-ncol: 2
 #| tbl-cap: "Number of Female Babies named Allison."
 #| tbl-cap-location: margin
+# attempt 2
 
 FemaleAllison <- StateAllison |> 
   select(State, Female) 
@@ -100,6 +103,8 @@ knitr::kable(list(FemaleAllison[1:26,], FemaleAllison[27:51,]),
 )
 
 ```
+
+## [Evidence 2]{.underline}: Q. 3
 
 3.  Making a visualization showing how the popularity of the name "Allison" has changed over the years.
 
@@ -136,7 +141,7 @@ ggplot(data = Allison, mapping = aes(x = as.factor(Year), y = Female)) +
 
 Notes: Found out how to rescale my axis to help emphasize the difference between the bars. I first found out about `ylim()` and `xlim()`, however, that function drops data observations, and I don't know how to fix it. Upon reading in the Help window about `ylim()`, it recommended `coord_cartesian(ylim())` and it worked perfect!
 
-## **4 Modeling the Number of Allisons**
+## [**Evidence 3**]{.underline}**: Modeling the Number of Allisons (Q. 4-8)**
 
 4.  Creating a linear model with the **year** as the explanatory variable, and the **number of Allisons** as the response.
 
@@ -221,9 +226,11 @@ qqnorm(Allison.stdres,
 
 ```
 
-## **5 Spelling by State**
+## **Spelling by State**
 
 Now we are looking at the different spellings of Allison's friend Allan!
+
+## [Evidence 4]{.underline}: Q. 1
 
 1.  Narrow the A name dataset (downloaded previously) down to only male-assigned babies named "Allan", "Alan", or "Allen". Make a plot comparing the popularity of these names over time.
 
@@ -275,7 +282,7 @@ ggplot(data = Allans, mapping = aes(x = as.factor(Year), y = Male, fill = Name)
         legend.position = "none")
 ```
 
-1.  In California, Allan's spelling of his name is the least common of the three
+2.  In California, Allan's spelling of his name is the least common of the three
 
 -   Creating a table for the three spellings of Allan in 2000 for Pennsylvania and California.
 
@@ -294,6 +301,8 @@ knitr::kable(Allans1,
                           ),
              align = c("rclll"))
 ```
+
+## [Evidence 5]{.underline}: Q. 3
 
 3.  Converting the total counts to overall percents.
 
@@ -317,9 +326,3 @@ knitr::kable(Allans2,
              align = c("rclll")
     )
 ```
-
-------------------------------------------------------------------------
-
-## Question:
-
-How do I make the numbers in the table display '%' symbols? For example, `65.3%` , `19.9%` ... ? Without having to convert the contents of the column vector into stings and adding a percent at the end?

@@ -11,14 +11,14 @@ title-block-banner-color: "light blue"
 toc: true
 ---
 
-# Setup
+### Setup
 
 ```{r}
 #| message: false
 library(tidyverse)
 ```
 
-# Data Import
+## Data Import
 
 ```{r}
 #| message: false
@@ -125,17 +125,30 @@ surveys |>
 
 Here we go! Now they match :)
 
+## [Evidence 1]{.underline}
+
 **4. Now that you've reordered the lines, look at your legend's label. That's terrible! Let's give the legend a new title *and* move the information from the y-axis to the plot title.**
 
 ```{r}
 #| message: false
 surveys |> 
-  mutate(genus = fct_reorder(genus, weight, .desc = TRUE)) |> 
+  mutate(genus = fct_reorder(genus, 
+                             weight, 
+                             .desc = TRUE)
+         ) |> 
   group_by(genus, year) |> 
-  summarise(mean_weight = mean(weight)) |> 
-  ggplot (mapping = aes(x = year, y = mean_weight, color = genus)) +
+  summarise(mean_weight = mean(weight)
+            ) |> 
+  
+  ggplot (mapping = aes(x = year, 
+                        y = mean_weight, 
+                        color = genus)
+          ) +
   geom_line(na.rm = TRUE) +
-  labs(title = "Mean Weight (g)", x = "Year", y = "", color = "Genus of Rodent")
+  labs(title = "Mean Weight (g)", 
+       x = "Year", 
+       y = "", 
+       color = "Genus of Rodent")
 ```
 
 ## **Part 3: Captures over the Week**

@@ -111,7 +111,7 @@ ggplot(cleaned_BlackfootFish, mapping = aes(x = weight, y = (length)^3)
 
 Evaluated in the graph above, there still appears to be unreasonable outlying data points. However, there really is not a way to remove them utilizing this method.
 
-## **Part 2**
+## [Evidence 1]{.underline}**: All Part 2**
 
 ### Function Creation:
 
@@ -224,7 +224,7 @@ CI_cleaned_BlackfootFish <- CI_cleaned_BlackfootFish |>
          )
 ```
 
-## **Part 3**
+## [**Evidence 2**]{.underline}**: All Part 3**
 
 ### Visualizing the Condition Index of Trout
 

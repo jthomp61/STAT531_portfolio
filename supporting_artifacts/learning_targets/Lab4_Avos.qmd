@@ -12,9 +12,7 @@ toc: true
 editor: visual
 ---
 
-One revision below indicated by: "[**REVISED**]{.underline}"
-
-# Setup
+### Setup
 
 ```{r setup}
 #| message: false
@@ -22,7 +20,7 @@ One revision below indicated by: "[**REVISED**]{.underline}"
 library(tidyverse)
 ```
 
-# Loading in the Data
+## Loading in the Data
 
 ```{r data}
 #| message: false
@@ -55,7 +53,7 @@ avos_clean <- avos |>
 
 ```
 
-## Splitting the Data Set
+## [Evidence 1]{.underline}
 
 ### Creating Regions Data Set:
 
