@@ -1,0 +1,6 @@
+"0","StateNames_A <- read.csv(here::here(""Week 9"", "
+"0","                                    ""Lab9"", "
+"0","                                    ""StateNames_A.csv""))"
+"2","Warning: cannot open file '/Users/glory4ous/Documents/Cal Poly/Fall 2022/STAT531/STAT531_portfolio/Week 9/Lab9/StateNames_A.csv': No such file or directory"
+"2","Error in file(file, ""rt"") : cannot open the connection
+"

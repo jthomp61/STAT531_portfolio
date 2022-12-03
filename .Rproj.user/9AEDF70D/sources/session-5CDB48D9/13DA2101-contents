@@ -1,0 +1,306 @@
+---
+title: "Lab7 Functions and Fish"
+author: Jamie Thompson
+format: 
+  html: 
+    code-fold: show
+    code-tools: true
+title-block-banner: true
+title-block-banner-color: "light blue"
+toc: true
+editor: visual
+---
+
+Revisions are indicated with [**REVISION**]{.underline}
+
+Additional additions indicated with [**ADDITIONS**]{.underline}
+
+### Setup
+
+```{r}
+#| message: false
+library(ggridges)
+library(RColorBrewer)
+library(tidyverse)
+library(ggtext)
+```
+
+### Loading in the Data
+
+This data set contains measurements of Blackfoot fish that were captured by a Biologist on a raft. The lack of a "laboratory setting" opens the door to the possibility of measurement errors. This idea will be explored in this lab.
+
+```{r}
+#| message: false
+BlackfootFish <- read.csv(here::here("Week 7",
+                                     "Lab7",
+                                     "BlackfootFish.csv")
+                          )
+```
+
+## **Part One: Summaries and Plots**
+
+### **Task 1 -- Summarizing Missing Data**
+
+-   How many observations have missing values?
+    -   Evaluating the table below, there is 1796 missing observations.
+-   What variable(s) have missing values present?
+    -   Missing observations are only seen in the `weight` variable.
+
+[**REVISED**]{.underline}
+
+```{r}
+BlackfootFish |> 
+  map_df(~ sum(is.na(.x)))
+```
+
+### **Task 2 -- Visualizing Missing Data**
+
+Here is a visualization depicting the frequency of missing values across the different years, sections, and trips.
+
+There is way more missing observations in trip two, compared to trip 1.
+
+Nice use of your forcats skills to recode your variable!
+
+The label for your legen d is a bit backwards. It seems like the pink are the observations with weights present and the blue are observations with missing weights. The `% NA` label makes it seem like pink is a "Present NA", which isn't what you are intending! I think a better label could be "Weight Measurement", as that is what you are assessing the missingness of.
+
+[**ADDITIONS**]{.underline}
+
+I wanted to try out the color pallet for legend in the title :)
+
+```{r}
+#| message: false
+
+BlackfootFish |> 
+  select(trip, 
+         year, 
+         section, 
+         weight) |> 
+  mutate(trip = as.factor(trip),
+         trip = fct_recode(trip,
+                           Trip_1 = "1",
+                           Trip_2 = "2")
+         ) |> 
+  ggplot(mapping = aes(y = as.factor(year))
+         ) +
+  geom_bar(mapping = aes(fill = is.na(weight)), 
+           position = "fill") +
+  scale_fill_brewer(palette = "Paired"
+                      ) +
+  facet_grid(rows = vars(trip), 
+             cols = vars(section)
+             ) +
+  labs(x = "Percent Data", 
+       y = "", 
+       fill = "",
+       title = str_c("Graphs Comparing: ", 
+                     "<span style = 'color:#A6CEE3'>
+                     **Percent Weight Data Present**</span>",
+                     " to <br><span style = 'color:#1F78B4'>
+                     **Percent Missing Weight Data**</span>")
+      ) +
+  theme(plot.title = element_markdown(),
+        legend.position = "none")
+```
+
+------------------------------------------------------------------------
+
+## **Part Two: Adjusting the Data (Function Writing)**
+
+### **Task 1 -- Writing a Function & Task 2: Adding Stops**
+
+Desiring to re-scale qualitative variables to be between 0 and 1 in a dataset requires doing some math operations to each variable. The code chunk below depicts transforming the length and weight variables, however it is difficult to read and requires repeat operations. To make this simpler will require a new written function!
+
+```{r}
+#| output: false
+#| eval: false 
+
+# Code I will be transforming with a funciton I will write below:
+
+BlackfootFish |>
+  mutate(length = (length - min(length, na.rm = TRUE)) /
+           (max(length, na.rm = TRUE) - min(length)),
+         weight = (weight - min(weight, na.rm = TRUE)) /
+           (max(weight, na.rm = TRUE) - min(length, na.rm = TRUE))
+         )
+```
+
+[**REVISED:**]{.underline} This function had redundancy with the `min()` function
+
+Below is the new function, `rescale_01()`, that takes a single vector and returns a scaled vector.
+
+```{r}
+# Function to rescale a single vector between 0 and 1.
+rescale_01 <- function(vect) {
+  stopifnot(is.numeric(vect),
+            length(vect) > 1)
+  
+  min_value <- min(vect, na.rm = TRUE)
+  
+  numerator <- vect - min_value
+  denominator <- max(vect, na.rm = TRUE) - 
+                 min_value
+  
+  return(numerator / denominator)
+}
+```
+
+[**ADDITION**]{.underline}
+
+Thinking about efficiency, even though the transformed code below is much cleaner than where we started, I still repeat the `rescale_01()` function 2 times.
+
+```{r}
+#| output: false
+#| eval: false 
+# Code from above transformed by utilizing this new function.
+BlackfootFish |>
+  mutate(length = rescale_01(length),
+         weight = rescale_01(weight)
+         )
+
+# Changed to use across instead! 
+BlackfootFish |>
+  mutate(across(length:weight, rescale_01)
+         )
+```
+
+### **Task 3 - Performing a Simple Test**
+
+Below I test my new function on a simple vector and verify that the maximum of your rescaled vector is 1 and the minimum is 0.
+
+```{r}
+x <- c(1:25, NA)
+
+rescale_x <- rescale_01(x)
+
+c(min(rescale_x, na.rm = TRUE), 
+  max(rescale_x, na.rm = TRUE))
+```
+
+### **Task 4 - Performing a More Difficult Test**
+
+Next, I test the function on the `length` column of the `BlackfootFish` dataset.
+
+Evaluating the two density plots in Figure 1 and Figure 2, both are exactly the same, and all that has changed is the scale.
+
+```{r}
+#| layout-ncol: 2
+#| fig-subcap: 
+#| - "Figure 1: shows a density plot visualizing the distribution of densitys with recaled Blackfoot Fish lenths."
+#| - "Figure 2: shows a density plot visualizing the distribution of the densitys with original Blackfoot Fish lenths."
+BlackfootFish |> 
+  mutate(length = rescale_01(length)
+         ) |> 
+  ggplot(mapping = aes(x = length)) +
+  geom_density() +
+  labs(x = "Rescaled Length of Fish", 
+       title = "Density of Rescaled Blackfoot Fish Lengths",
+       y = "")
+
+BlackfootFish |> 
+  ggplot(mapping = aes(x = length)) +
+  geom_density() +
+  labs(x = "Length of Fish", 
+       title = "Density of Original Blackfoot Fish Lengths",
+       y = "")
+```
+
+### **Task 5 -- Incorporating Variables**
+
+If I wanted my `rescale()` function to perform operations on a single or multiple variable/s within a dataset my function would need to take a dataframe and variable name/s and inputs and return a dataframe where the variable has been rescaled.
+
+Below I create the `rescale_column()` function that accepts two arguments, (1) a dataframe, and (2) the name/s of the variable/s to be rescaled.
+
+```{r}
+rescale_column <- function(data, variables) {
+  stopifnot(is.data.frame(data))
+
+  rescale_data <- data |> 
+    mutate(across(.cols = {{ variables }},
+                  .fns = rescale_01)
+           )
+  return(rescale_data)
+}
+```
+
+### **Task 6 -- Another Function Test**
+
+To test this new function I try to rescale both the `length` and `weight` columns of the `BlackfootFish` dataset.
+
+```{r}
+Rescaled_BlackfootFish <- rescale_column(BlackfootFish, length:weight)
+```
+
+NOTE: Below, I tried making a function to slice both the max and min of a vector. I am not determined that which.max/min are the best functions for this however...
+
+```{r}
+max_min <- function(vect) {
+  stopifnot(is.numeric(vect))
+  
+  maxmin <- c(which.max(vect),
+              which.min(vect)
+  )
+  
+  return(maxmin)
+}
+
+```
+
+NOTES for later: "You could return a dataframe with one column for the max and one column for the min! Your function would need to take as inputs (1) a dataframe and (2) the variable to be sliced."
+
+Confirming that the new `length` and `weight` columns of the `BlackfootFish` dataset have been rescaled with 1 being the maximum and 0 being the minimum.
+
+```{r}
+#| layout-ncol: 2
+# testing if the max is 1 and min is 0 for both variables
+Rescaled_BlackfootFish |>
+  select(weight) |> 
+  slice(max_min(weight)
+        )
+
+Rescaled_BlackfootFish |>
+  select(length) |> 
+  slice(max_min(length)
+        )
+```
+
+Visualization confirming the rescaled data is the same and all that has changed is the scale of the data.
+
+```{r}
+#| layout-ncol: 2
+#| fig-subcap: 
+#| - "Figure 1: shows a density plot visualizing the distribution of densitys with recaled Blackfoot Fish lenths."
+#| - "Figure 2: shows a density plot visualizing the distribution of the densitys with original Blackfoot Fish lenths."
+#| - "Figure 3: shows a density plot visualizing the distribution of densitys with recaled Blackfoot Fish Weights"
+#| - "Figure 4: shows a density plot visualizing the distribution of the densitys with original Blackfoot Fish Weights"
+# Figure 1
+Rescaled_BlackfootFish |> 
+  ggplot(mapping = aes(x = length)) +
+  geom_density() +
+  labs(x = "Rescaled Length of Fish", 
+       title = "Density of Rescaled Blackfoot Fish Lengths",
+       y = "")
+
+# Figure 2
+BlackfootFish |> 
+  ggplot(mapping = aes(x = length)) +
+  geom_density() +
+  labs(x = "Length of Fish", 
+       title = "Density of Original Blackfoot Fish Lengths",
+       y = "")
+
+# Figure 3
+Rescaled_BlackfootFish |> 
+  ggplot(mapping = aes(x = weight)) +
+  geom_density(na.rm = TRUE) +
+  labs(x = "Rescaled Weight of Fish", 
+       title = "Density of Rescaled Blackfoot Fish Weights",
+       y = "")
+
+# Figure 4
+BlackfootFish |> 
+  ggplot(mapping = aes(x = weight)) +
+  geom_density(na.rm = TRUE) +
+  labs(x = "Weight of Fish", 
+       title = "Density of Original Blackfoot Fish Weights",
+       y = "")
+```

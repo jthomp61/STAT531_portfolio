@@ -1,0 +1,48 @@
+---
+title: "Week 2 notes"
+format: html
+editor: visual
+---
+
+Reviewing code
+
+-   plot titles only use if it tells you something new
+
+-   Name arguments: example xlab = , ylab = , color =
+
+`plot(cars)` vs `plot(x = cars$speed, y = cars$dist)`
+
+-   plot does not have a `data =` argument.
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = hwy, y = cty)
+             )
+```
+
+-   named arguments
+
+-   white space
+
+-   return the ending parentheses so you know here the function ends
+
+-   code not longer than 80 characters
+
+    -   global options, display, margin (choose margin column)
+
+Load in data using here package
+
+Use R projects
+
+`here::here` the second here is a function, the first here is the package here\
+OR
+
+`library(here)`
+
+`here()` dont need to call the here package with the `here::`
+
+Why use here?
+
+-   uses the exact same path
+
+`geom_boxplot(), + geom_jitter(color = "tomato")`

@@ -1,0 +1,241 @@
+---
+title: "W3 Notes"
+format: html
+editor: visual
+---
+
+-   dbplyr accomplish ONE task
+
+-   want functions that have intuitive names
+
+# Git and Github
+
+-   working with git, using github. git is a language like R.
+
+-   git is hard... git add, git commit, git push, git pull
+
+## Functions
+
+`subset()` return subsets of vectors, matrices or data frames which meed conditions
+
+`filter()` -\> filter by a categorical variable - **filtering on the rows of the dataframe**
+
+`select()` -\> select column/s
+
+-   `select(-column_name, -column_name)` note the '-' in front means to dis select it
+
+`mutate()` -\> making changes to a dataframe - 2 ways to change, 1 is can modify existing variables, 2 is add a new variable based on existing column
+
+`summarize()` -\> calculating statistics from variables in a dataframe, outputs a new dataframe based on how many stats you ask for (eg, mean, median, sd, sample size 'n')
+
+-   doing summarize on the dataset b/f the group_by, would give a table with ONE median and mean instead of a summary on all the groups (like species)
+
+`arrange()` -\> changes the ordering of a variable
+
+`group_by()` -\> creates separate dataframes based in the groups specified (ex: ID has 2 categorical variables, group_by(ID) creates on dataframe on one ID and another on the other ID) \*\*usually goes with summarize
+
+`count()` and `count(sort = TRUE)` sorts based off the n (sample size for example)
+
+`rename()` changes name of columns
+
+-   `` rename(small =`966`) `` small is what I want the name to be, 966 is the old name
+
+`separate()` separate values of a variable
+
+`select(n)` if want to select the column
+
+`pull()` pull decompress one object into vector, one dimensional vector
+
+`factor(day, levels = c("M", "T", "W",…)` is a function that converts with levels. `as.factor` does it quick and dirty
+
+`drop_na()`
+
+-   drops any row with a missing value of any variable
+-   but you can specify what columns it should look at for missing values.
+
+`count()`
+
+-   give you summary statistics, but also has built in sort argument `sort = TRUE`
+-   `starwars |> count(homeworld, sort = TRUE)`
+
+`distinct()` selects the unique/ distinct rows form a dataset
+
+-   arguments:
+    -   ... --- variables to use when determining uniqueness
+
+        -   can use multiple
+
+        -   may need three levels to determine if they are distinct
+
+    -   `.keep_all` decides if all the columns should be kept, `FLASE` is default
+
+        -   `distinct(surveys, ID, date, location, .keep_all = TRUE)` what distinct rows but keep all columns need the keep all
+
+`across()`
+
+-   makes it easy to apply the same transformation to multiple columns, allowing you to select semantics inside in data-masking
+
+-   `across(.cols = everything(), .fns = NULL, …)`
+
+-   `summarize(across(height:mass, mean, na.rm = TRUE))` the na.rm = TRUE is apart of the mean function - \> `mean(height, na.rm = TRUE)`
+
+-   `summarize(across(c(height, weight, mass), mean, na.rm = TRUE))` if columns are not next to each other
+
+-   `summarize(across(where(is.numeric), mean, na.rm = TRUE))` the `where(is.numeric)` looks for all columns that are numeric
+
+Pipe operator original: `%>%` dbplyer now has the native pipe: `|>` does not need a package
+
+```{r}
+#| message: false
+library(tidyverse)
+library(dbplyr)
+```
+
+```{r}
+# surveys |>
+#   group_by() |>
+
+```
+
+## Shoutcuts
+
+`command` + `shift` + m gives shortcut for pipe `|>`
+
+`option` + `-` gives shortcut for the assignment `<-`
+
+`control` + `shift` + `C` to comment out a section of code:
+
+`#|` = hash pipe
+
+### piping notes:
+
+`filter(gender == "feminine", !is.na(homeworld))` the camma after feminine means AND while the `!` means NOT
+
+You can pipe data (filtered if desired) into ggplot if don't need to save a new dataset with the filtered data. Try not to clutter the r environment)
+
+## Discritizing Variables:
+
+-   `if_else(conditon, TURE, FALSE)`
+    -   useful when there are two options
+-   `case_when(conditon1 ~ TRUE, conditon2 ~ TRUE, conditon3 ~ TRUE, ...)`
+    -   use when have 3 or more options (do NOT use nested if_else() but DONT)
+
+What is i want the mean of all column, or count all the columns ... Could copy and paste. No.
+
+## Relational data:
+
+-   mutating joints: addes info from a new dataframe to observations in an existing dataframe
+-   filtering joins: filters observations based on values in new dataframes
+
+### Keys:
+
+-   uniquely identifies an observation in a dataset
+-   relate datasets to eachother
+
+### Different ways to join datasets together:
+
+-   `inner_join()`: matches pairs of observations when the keys are the same
+
+    -   only joins things that have a pair among both datasets. If there isn't a pair they get discarded
+
+### Mutating Joins
+
+-   `left_join()` keep everything on the left and join on the right
+
+-   `right_join()` keep everything on the right most dataset and new columns joined at the left
+
+-   `full_join()` keep everything in both datasets and drops anything with missing values in both locations
+
+### Filtering Joins
+
+-   `semi_join()` get original data set back but with fewer rows -\> using another data set to determine which rows to keep (if there ARE matches in key values in other data set) and which rows to filter out (data set does NOT have matches in key values in other data set)
+
+    -   `surveys |> filter(species_id %in% c("BA", "DM", "DS")` similar to `semi_join()`, including observations with `%in%`
+
+-   `anti_join()` get original data set back but with fewer rows -\> using another data set to determine which rows to keep (if there are NO matches in key values in other data set) and which rows to filter out (data set DO have matches in key values in other data set)
+
+    -   lets you see which values in data set that you didn't get observations on
+
+    -   `surveys |> filter(!species_id %in% c("BA", "DM", "DS")` similar to `anti_join()`, including observations with `%in%` then say NOT with `!` before `species_id`
+
+## Across, .cols, .fns
+
+`summarize(across(.cols = everything(), .fns = mean, na.rm = TRUE)`
+
+-   `.cols =` and `.fns =`is the named argument similar to `data =` and `mapping =` and
+
+-   `mean(var1, na.rm = TRUE)` what it looks like for every single variable
+
+`mutate(across(.cols = everything(), .fns = na_if, y = "xxx")` if you don't specify the `x =` it will barrow it from the `.cols` in the `across()` function.
+
+another way to do above:
+
+`.fns = na_if(x = ., y = "xxx")` OR `.fns = ~na_if(x = .x, y = "xxx")`
+
+-   need to use an aleious to specify which column put the columns, when we use an aleious, basically making a function, and need to specify "here is my function I am writing for you, it will use na_if and do..."
+
+metropolitan that doesnt have the regions in it...
+
+# Dates
+
+`ymd()`, `ymd_h()`, `dmy()`, ...
+
+TIme zone:
+
+`ymd_h("2021-4-25 18", tz = "American/Los_Angeles")`
+
+`force_tz()` same clock time as input, new time zone
+
+`with_tz()` new clock time, as it would appear in a different time zone
+
+is the time zone in the morning?
+
+-   `am(time_specified)`
+
+    -   TRUE
+
+-   `am(time_specified)`
+
+    -   FALSE
+
+# Strings
+
+`str_subset(string, pattern = "\\w")`
+
+-   write regular expressions that serarch for words that
+
+    -   end with a vowel
+
+        -   `"(a|e|o|u|y|i)$"` same thing `"(aeiouy)$"`
+
+    -   start with x, y, z
+
+        -   `"^(xyz)"`
+
+    -   do not contain x, y, z
+
+        -   `"[^xyz]"`
+
+    -   contain British spelling
+
+        -   British - American
+
+        -   our - or
+
+        -   re - er
+
+        -   ise - ize
+
+        -   yse - yze
+
+            -   `"(our|ise|re|yse)$"`
+
+detect matches: Yes or no answer booleans
+
+```{r}
+par(mfrow = c(1, 2))
+
+facet_wrap(~ variable, nrow = 2)
+
+gridExtra::grid.arrange(plot1, plot2, nrow = 1)
+```

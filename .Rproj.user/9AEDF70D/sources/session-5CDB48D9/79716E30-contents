@@ -1,0 +1,17 @@
+---
+title: "My Growth as a Data Scientist"
+format: 
+  html: 
+    self-contained: true
+title-block-banner: true
+title-block-banner-color: "light blue"
+editor: visual
+---
+
+**Growth as a data scientist**: Describe how you have improved as a practitioner and student of data science this quarter through your work in the course. Focus specifically on data science concepts and the skills we employed in learning them. Don't just give a laundry list of topics that you learned (those are in the syllabus, so we know them already). Focus instead on a small number of specific areas of growth for you that happened in STAT 331. Identify at least one artifact in your portfolio that illustrates each area of growth. Explain in this essay how this artifact shows growth in the way you are describing.\
+
+One big area of growth for me was with data manipulation, by altering data frames to fit my needs, forming tables with summaries, and taking those summaries and making visualizations.
+
+-   This is clearly seen in my **challenge 4** assignment. Where I take 2 data sets and select information I desire out of the 2 data sets and then combined the summaries of each of data sets together. This what the first challenge I felt accomplished by, even though I needed to do revisions on it (and that it took me till the end to do those revisions).
+
+One more big growth for me as a data scientist is being exploitative by researching what I don't know then testing out what I find. Part of being a data scientists is being able to explore topics you are unfamiliar with. For example, in **Challenge 7** the data set was about trout fish, which I have NO background in fish. Being able to understanding your data and being able to produce understandable results from the data your given in a big part of being a data scientist. I show this growth very well in my **Challenge 7**.

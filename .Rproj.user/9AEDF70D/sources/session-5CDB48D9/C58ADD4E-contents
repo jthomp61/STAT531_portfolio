@@ -1,0 +1,107 @@
+---
+title: "Preview Activiy 9"
+format: html
+editor: visual
+---
+
+```{r}
+#| message: false
+library(tidyverse)
+library(palmerpenguins)
+```
+
+```{r}
+my_model_2 <- penguins %>%
+  lm(bill_length_mm ~ bill_depth_mm*species, data = .)
+```
+
+-   `%>%` is magrittr pipe
+
+    -   has a place holder so it works with the `.`
+
+-   `|>` native pipe
+
+    -   the native pipe does not work with `data = .`
+
+    -   does not have a place holder HOWEVER an underscore WORKS `_`
+
+```{r}
+my_model_2 <- penguins  |> 
+  lm(bill_length_mm ~ bill_depth_mm*species, data = _)
+```
+
+```{r}
+summary <- summary(my_model_2)
+broom::tidy(my_model_2) 
+broom::glance(my_model_2)
+```
+
+\
+
+```{r}
+#| message: false
+#| warning: false
+penguins |> 
+  ggplot(aes(x = bill_depth_mm, y = bill_length_mm, color = species)) +
+  geom_point() +
+  stat_smooth(method = "lm") + 
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)")
+```
+
+```{r}
+# Visualizing Normal Errors
+ggplot(data = my_model_2, aes(x = .resid)) +  
+  geom_histogram(aes(y = ..density..)) +  
+  geom_density(color = "dodgerblue",
+               lwd = 1.5) + 
+  xlab("Residuals")
+```
+
+```{r}
+fake_data <- tibble(height = rnorm(n = 100, mean = 67, sd = 3),  
+                    age = runif(n = 100, min = 15, max = 75),  
+                    measure = rbinom(n = 100, size = 1, prob = 0.6)
+                    ) |>   
+  mutate(supports_measure_A = ifelse(measure == 1, 
+                                     "yes", 
+                                     "no")  
+         )
+
+
+fake_data |>
+  ggplot(aes(x = height)) + 
+  #geom_histogram(aes(y = ..density..), bins = 10) +
+  stat_function(fun = ~dnorm(.x, mean = 67, sd = 3),
+                col = "cornflowerblue", lwd = 2) +  
+  stat_function(fun = ~dnorm(.x, mean = 67, sd = 2),
+                col = "deeppink", lwd = 2)
+```
+
+NOTES
+
+`{lm(y ~ x, data = dataset)}`
+
+both was below work same way!
+
+```{r}
+dataset_lm$fitted.values
+dataset_lm$residuals
+
+fitted(dataset_lm)
+resid(dataset_lm)
+
+# both these pull vectors! 
+# if you want dataframe use option 3
+broom::augment(dataframe_lm) 
+# helpful because can plot residuals vs the x or y :)
+```
+
+```{r}
+dataframex |> 
+  broom::augment(dataframe_lm) |> 
+  ggplot(mapping = aes(y = .resid, x = .fitted)) +
+  geom_point()
+```
+
+use the pnorm to calculate the cumulative prob at and below the given number

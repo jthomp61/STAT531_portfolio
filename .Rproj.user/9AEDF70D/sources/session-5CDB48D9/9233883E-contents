@@ -1,0 +1,328 @@
+---
+title: "Lab 9: Baby Names"
+author: "Jamie Thompson"
+format: 
+  html: 
+    self-contained: true
+    code-fold: show
+    code-tools: true
+title-block-banner: true
+title-block-banner-color: "light blue"
+toc: true
+editor: visual
+---
+
+### Setup
+
+```{r}
+#| message: false
+
+library(RColorBrewer)
+library(tidyverse)
+library(ggtext)
+```
+
+## **The Data**
+
+The data in this lab contains many baby names and how many babies were named each name per each state over a set of years (1997 - 2014). At [this link](https://www.dropbox.com/sh/czm61yzmvzl6xfb/AABEFdpy02aNRhZ_vcxrVAQSa?dl=0), you can find the names for ALL 50 states, in separate datasets organized by first letter.
+
+#### **Question to be evaluated: Is Dr. Theobold's first name not cool any more?**
+
+For a majority of this lab, I will look at the name "Allison" and how it has changed over time. Since her name begins with "A", I downloaded the `StateNames_A.csv` and import in it below.
+
+```{r}
+StateNames_A <- read.csv(here::here("supporting_artifacts",
+                                    "learning_targets", 
+                                    "Data", 
+                                    "StateNames_A.csv")
+                         )
+```
+
+## **Summarizing & Visualizing the Number of Allison's**
+
+1.  First summary table asked: Number of female and males named 'Allison' per each state.
+
+```{r}
+StateAllison <- StateNames_A |>
+  mutate(Gender = as.factor(Gender),
+         Gender = fct_recode(Gender,
+                             Female = "F",
+                             Male = "M")
+         ) |> 
+  pivot_wider(names_from = Gender,
+              values_from = Count) |> 
+  group_by(State) |> 
+  filter(Name == "Allison") |>
+  summarise(across(Female:Male, sum),
+            across(Female:Male, ~replace_na(., 0))
+            ) 
+
+
+knitr::kable(StateAllison, 
+             col.names = gsub(pattern = "[.]", 
+                              replacement = " ", 
+                              x = names(StateAllison)),
+             align = "ccc",
+             caption = "Number of Babies named Allison per State.")
+```
+
+## [Evidence 1]{.underline} (All of question 2)
+
+2.  Adjustment of table above: Selecting only Female's because "Allison" is a name given overwhelmingly to babies assigned female at birth.
+
+There are two attempts at this below, both demonstrating issues. I wanted to make this table have two columns so it isn't as long.
+
+The fist attempt below just looks terrible, and is all I could find on the googles. I cant figure out how to get it to be aligned properly or fill the space pretty. In the book, it has `booktabs = TRUE, valign = 't'` however after removing and/or adding those things, they did nothing. You can try yourself by removing the `#` on the code.
+
+```{r}
+# first attempt
+FemaleAllison <- StateAllison |> 
+  select(State, Female) 
+  
+knitr::kable(list(FemaleAllison[1:26,], FemaleAllison[27:51,]),
+             # booktabs = TRUE, valign = 't',
+          # these specification above dont do anything visually. 
+             caption = "Number of Female Babies named Allison.")
+```
+
+This next attempt looks great! However no matter what I tried, the caption will not appear at the top (its at bottom). I tried using hash-pipes seen below, but the specification of `#| cap-location: top` OR `#| fig-cap-location: top` AND the `caption = "..."` within the `kable()` function do not work. Again, you can try yourself by removing the `#` on the code.
+
+```{r}
+#| layout-ncol: 2
+#| tbl-cap: "Number of Female Babies named Allison."
+#| tbl-cap-location: margin
+# attempt 2
+
+FemaleAllison <- StateAllison |> 
+  select(State, Female) 
+  
+knitr::kable(list(FemaleAllison[1:26,], FemaleAllison[27:51,]),
+             format = "simple"
+             #caption = "Number of Female Babies named Allison."
+          # this caption specification doens't do anything.
+)
+
+```
+
+## [Evidence 2]{.underline}: Q. 3
+
+3.  Making a visualization showing how the popularity of the name "Allison" has changed over the years.
+
+The bar graph below shows the popularity of the name Allison spiked in 1998 then steadily dropped till 2017, with a small spike of popularity till 2009, then dropped again. Overall, the popularity of the name 'Allison' dropped throughout the years.
+
+```{r}
+# Creating the Dataset for visualizaiton that I will use later on as well. 
+Allison <- StateNames_A |>
+  filter(Name == "Allison") |> 
+  mutate(Gender = as.factor(Gender),
+         Gender = fct_recode(Gender,
+                             Female = "F",
+                             Male = "M")
+         ) |>
+  pivot_wider(names_from = Gender,
+              values_from = Count) |>  
+  group_by(Year) |>
+  summarise(across(Female:Male, sum),
+            across(Female:Male, ~replace_na(., 0))
+  )
+            
+            
+  
+# Making the visualization
+ggplot(data = Allison, mapping = aes(x = as.factor(Year), y = Female)) +
+  geom_col() +
+  coord_cartesian(ylim = c(5000, 8000)
+                  ) +
+  labs(title = "Number of Females named 'Allison'",
+       y = "",
+       x = "Year")
+
+```
+
+Notes: Found out how to rescale my axis to help emphasize the difference between the bars. I first found out about `ylim()` and `xlim()`, however, that function drops data observations, and I don't know how to fix it. Upon reading in the Help window about `ylim()`, it recommended `coord_cartesian(ylim())` and it worked perfect!
+
+## [**Evidence 3**]{.underline}**: Modeling the Number of Allisons (Q. 4-8)**
+
+4.  Creating a linear model with the **year** as the explanatory variable, and the **number of Allisons** as the response.
+
+[**NOTE**]{.underline}: is this a Time Series Regression model? Since we are using `Year`?
+
+```{r}
+#| message: false
+
+Allison_lm <- lm(Female ~ Year, data = Allison)
+
+Allison_lm
+```
+
+5.  Visualize the regression model.
+
+Evaluating the graph produced below, the linear regression line produced does show a slight negative linear relationship between `Year` and `Number of Allison's`, which matches with the bar graph above.
+
+```{r}
+#| message: false
+
+ggplot(data = Allison, mapping = aes(x = Year, y = Female)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(title = "Number of Females named 'Allison'",
+       y = "",
+       x = "Year")
+
+```
+
+6.  Write out the estimated regression equation.
+
+`Est. Number of females with Allison name = 209689.8 - 101.5(Year)`
+
+7.  Plot the *residuals* of the model, that is, the actual values minus the predicted values. Comment on the residuals - do you see any patterns?
+
+To my knowledge, we usually plot the residuals vs the fitted values.
+
+I don't really see any obvious patterns, there aren't many datapoints so it is hard to tell. There may be sight evidence of fanning, which means theresiduals are close to 0 for small x values and are more spread out for large x values. This can indicate a violation of equal constant variance, but its hard to tell so I'll say it looks OK!
+
+```{r}
+Allison_lm |> 
+  broom::augment() |> 
+  ggplot(mapping = aes(y = .resid, x = .fitted)
+         ) +
+  geom_point() +
+  geom_hline(yintercept = 0)
+```
+
+8.  What do you conclude from this model?
+
+With linear regression, assumptions that need to be checked are:
+
+-   linearity
+    -   Evaluating the visualization of the linear model in number 5, it does appear linear.
+-   independence
+    -   Independence especially needs to be checked in time series regression models, which I believe this is.
+    -   Below is the graph I know can be used to check independence of time series plots, but to be honest, I don't remember how to tell if it passes or fails the independence check.
+
+```{r}
+Allison_lm |> 
+  broom::augment() |> 
+  ggplot(mapping = aes(y = .resid, x = Year)
+         ) +
+  geom_line() +
+  geom_point() +
+  geom_hline(yintercept = 0)
+```
+
+-   equal constant variance
+    -   As seen in number 7 with the plot of residuals vs fitted values, I concluded equal constant variaence was OK.
+-   normality
+    -   Below is as far as I could get to making a normal probability plot... Got the help from <http://www.r-tutor.com/elementary-statistics/simple-linear-regression/normal-probability-plot-residuals> . I am unsure how to put the theoretical line though the plot.
+
+    -   But, there are definite tails at the ends of the NPP plot. Again, I am rusty and dont quite remeber how to diagnose a normal probability plot.
+
+```{r}
+Allison.stdres = rstandard(Allison_lm)     
+
+qqnorm(Allison.stdres, 
+       ylab="Standardized Residuals", 
+       xlab="Normal Scores") 
+
+```
+
+## **Spelling by State**
+
+Now we are looking at the different spellings of Allison's friend Allan!
+
+## [Evidence 4]{.underline}: Q. 1
+
+1.  Narrow the A name dataset (downloaded previously) down to only male-assigned babies named "Allan", "Alan", or "Allen". Make a plot comparing the popularity of these names over time.
+
+For this visualization, I was quite mixed about using `position = "dodge"` or `position = "fill"` . I decided I liked the dodge one better for this graph :)
+
+```{r}
+#| output: false
+#| echo: false
+
+library(RColorBrewer)
+brewer.pal(n = 3, name = "Paired")
+```
+
+```{r}
+Allans <- StateNames_A |> 
+  filter(Name %in% c("Allan", 
+                     "Alan", 
+                     "Allen")
+         ) |> 
+  mutate(Gender = as.factor(Gender),
+         Gender = fct_recode(Gender,
+                             Female = "F",
+                             Male = "M")
+         ) |>
+  pivot_wider(names_from = Gender,
+              values_from = Count) |> 
+  select(Name, Year, State, Male)
+
+
+# Making the Visualizations
+ggplot(data = Allans, mapping = aes(x = as.factor(Year), y = Male, fill = Name)
+       ) +
+  geom_bar(stat="identity", position = "dodge") +
+  scale_fill_brewer(palette = "Paired"
+                      ) +
+  labs(x = "Year", 
+       y = "", 
+       fill = "",
+       title = str_c("Graph comparing the popularity of the 
+                     names:", 
+                     "<span style = 'color:#A6CEE3'>
+                     **Alan**</span>",
+                     " to<span style = 'color:#1F78B4'>
+                     **Allan**</span>",
+                     " to<span style = 'color:#B2DF8A'>
+                     **Allen**</span>")
+      ) +
+  theme(plot.title = element_markdown(),
+        legend.position = "none")
+```
+
+2.  In California, Allan's spelling of his name is the least common of the three
+
+-   Creating a table for the three spellings of Allan in 2000 for Pennsylvania and California.
+
+```{r}
+Allans1 <- Allans |> 
+  pivot_wider(names_from = Name,
+              values_from = Male) |> 
+  filter(State %in% c("CA", "PA"),
+         Year == 2000)
+
+# Making the table
+knitr::kable(Allans1,
+             col.names = gsub(pattern = "[.]",
+                              replacement = " ",
+                              x = names(Allans1)
+                          ),
+             align = c("rclll"))
+```
+
+## [Evidence 5]{.underline}: Q. 3
+
+3.  Converting the total counts to overall percents.
+
+```{r}
+Allans2 <- Allans |> 
+  filter(State %in% c("CA", "PA"),
+         Year == 2000) |> 
+  pivot_wider(names_from = State,
+              values_from = Male) |> 
+  mutate(across(CA:PA, ~ . / sum(.) * 100),
+         across(CA:PA, ~round(., 1))) |> 
+  pivot_longer(cols = CA:PA, names_to = "State", values_to = "Percent") |> 
+  pivot_wider(names_from = Name,
+              values_from = Percent)
+
+# Making the Table
+knitr::kable(Allans2,
+             col.names = c("Year", "State", 
+                           "% Alan's", "% Allen's", 
+                           "% Allan's"),
+             align = c("rclll")
+    )
+```

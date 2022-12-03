@@ -1,0 +1,210 @@
+---
+title: "Lab5 Factors"
+author: "Jamie Thompson"
+format: 
+  html: 
+    self-contained: true
+    code-fold: show
+    code-tools: true
+title-block-banner: true
+title-block-banner-color: "light blue"
+toc: true
+---
+
+### Setup
+
+```{r}
+#| message: false
+library(tidyverse)
+```
+
+## Data Import
+
+```{r}
+#| message: false
+surveys <- read_csv(here::here("supporting_artifacts",
+                               "learning_targets", 
+                               "Data", 
+                               "surveys.csv")
+                    )
+```
+
+## Data Context
+
+The Portal Project is a long-term ecological study being conducted near Portal, AZ. Since 1977, the site has been used to study the interactions among rodents, ants and plants and their respective responses to climate. To study the interactions among organisms, we experimentally manipulate access to 24 study plots. This study has produced over 100 scientific papers and is one of the longest running ecological studies in the U.S.
+
+We will be investigating the animal species diversity and weights found within plots at the Portal study site. The dataset is stored as a comma separated value (CSV) file. Each row holds information for a single animal, and the columns represent:
+
+| Column          | Description                        |
+|-----------------|------------------------------------|
+| record_id       | Unique id for the observation      |
+| month           | month of observation               |
+| day             | day of observation                 |
+| year            | year of observation                |
+| plot_id         | ID of a particular plot            |
+| species_id      | 2-letter code                      |
+| sex             | sex of animal ("M", "F")           |
+| hindfoot_length | length of the hindfoot in mm       |
+| weight          | weight of the animal in grams      |
+| genus           | genus of animal                    |
+| species         | species of animal                  |
+| taxon           | e.g. Rodent, Reptile, Bird, Rabbit |
+| plot_type       | type of plot                       |
+
+# **Part 1: Revisiting Lab 2**
+
+In lab 2 I created a side-by-side boxplot showing the distribution of weights within each species of rodents. Following questions 1 and 2, I alter that original code below.
+
+**1. Reorder the boxplots so the weights go in descending order.**
+
+**2. Now that you've reordered, look at your y-axis label. That's long! Let's take Will Chase's advice and move the y-axis label to the top of the plot.**
+
+```{r}
+surveys |> 
+  mutate(species = fct_reorder(species, 
+                               weight, 
+                               .desc = TRUE)) |> 
+  ggplot(mapping = aes(x = weight, 
+                       y = species)
+       ) + 
+  geom_boxplot(outlier.shape = NA
+               ) + 
+  geom_jitter(height = 0.3, 
+              color = "blue",
+              alpha = 0.05
+              ) + 
+  labs(x = "Weight (g)",
+       y = "",
+       title = "Species of Rodent"
+       )
+# making the title be the y-axis label, allowes for long y axis labels!
+```
+
+## **Part 2: Time-Series Plot**
+
+**1. Create a visualization how weights vary for each genus over the duration of the study.**
+
+```{r}
+surveys |> 
+  ggplot (mapping = aes(x = date, 
+                        y = weight, 
+                        color = genus)
+          ) +
+  geom_line(na.rm = TRUE)
+```
+
+This is a messy plot... I simplify that fact in question 2!
+
+**2. Calculate and plot the mean weight for each year (for each genus).**
+
+```{r}
+#| message: false
+surveys |> 
+  group_by(genus, year) |> 
+  summarise(mean_weight = mean(weight)
+            ) |> 
+  ggplot (mapping = aes(x = year, 
+                        y = mean_weight, 
+                        color = genus)) +
+  geom_line(na.rm = TRUE)
+```
+
+This does look much better, and the legend order of colors does not match the order of lines on the graph.
+
+**3. Reorder the lines so the weights go in descending order.**
+
+```{r}
+#| message: false
+surveys |> 
+  mutate(genus = fct_reorder(genus, weight, .desc = TRUE)) |> 
+  group_by(genus, year) |> 
+  summarise(mean_weight = mean(weight)) |> 
+  ggplot (mapping = aes(x = year, y = mean_weight, color = genus)) +
+  geom_line(na.rm = TRUE)
+```
+
+Here we go! Now they match :)
+
+## [Evidence 1]{.underline}
+
+**4. Now that you've reordered the lines, look at your legend's label. That's terrible! Let's give the legend a new title *and* move the information from the y-axis to the plot title.**
+
+```{r}
+#| message: false
+surveys |> 
+  mutate(genus = fct_reorder(genus, 
+                             weight, 
+                             .desc = TRUE)
+         ) |> 
+  group_by(genus, year) |> 
+  summarise(mean_weight = mean(weight)
+            ) |> 
+  
+  ggplot (mapping = aes(x = year, 
+                        y = mean_weight, 
+                        color = genus)
+          ) +
+  geom_line(na.rm = TRUE) +
+  labs(title = "Mean Weight (g)", 
+       x = "Year", 
+       y = "", 
+       color = "Genus of Rodent")
+```
+
+## **Part 3: Captures over the Week**
+
+In this part I look at the number of rodents captured each day of the week.
+
+**1. Create a visualization of the number of rodents captured each day of the week.**
+
+```{r}
+surveys |> 
+  filter(day_of_week %in% c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")) |> 
+  mutate(day_of_week = factor(day_of_week)) |> 
+  ggplot(mapping = aes(x = day_of_week)) +
+  geom_bar() +
+  labs(x = "Days of the Week", y = "", 
+       title = "Number of Rodents Captured")
+```
+
+Yep the days of the week are not in the order we want. I fix that in number 2!
+
+**2. Change the order of the day of the week to go Monday through Sunday.**
+
+```{r}
+surveys |> 
+  filter(day_of_week %in% c("Mon", "Tue", "Wed", 
+                            "Thu", "Fri", "Sat", "Sun")) |> 
+  mutate(day_of_week = factor(day_of_week, 
+                              levels = c("Mon", "Tue", "Wed", 
+                                         "Thu", "Fri", "Sat", "Sun"))) |> 
+  ggplot(mapping = aes(x = day_of_week)
+         ) +
+  geom_bar() +
+  labs(x = "Days of the Week", 
+       y = "", 
+       title = "Number of Rodents Captured")
+```
+
+There are way more rodents captured on the weekends compared to the week days. However, if I were to add up the weekdays, would the number of rodents captured still be greater on the weekend? I find out in question 3!
+
+**3. Collapse Monday through Friday into a `"Weekday"` level, and collapse Saturday and Sunday into a `"Weekend"` level. Plot the number of rodents captured between the two groups.**
+
+```{r}
+surveys |> 
+  filter(day_of_week %in% c("Mon", "Tue", "Wed", 
+                            "Thu", "Fri", "Sat", "Sun")) |> 
+  count(day_of_week, name = "captured") |> 
+  mutate(day_of_week = fct_collapse(day_of_week, 
+                                    Weekday = c("Mon", "Tue", 
+                                                "Wed", "Thu", "Fri"),
+                                    Weekend = c("Sat", "Sun"))) |> 
+  ggplot(mapping = aes(x = day_of_week, y = captured)
+         ) +
+  geom_col() +
+  labs(x = "Days of the Week", 
+       y = "", 
+       title = "Number of Rodents Captured")
+```
+
+Yep, there are sill many more rodents captured on the weekend compared to the weekdays as a whole.

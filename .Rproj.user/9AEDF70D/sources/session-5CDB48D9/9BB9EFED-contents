@@ -1,0 +1,70 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+penguin_lm <- penguins |> 
+  lm(body_mass_g ~ flipper_length_mm, data  = _)
+```
+
+```{r}
+penguin_predict <- predict(penguin_lm)
+```
+
+```{r}
+penguin_sigma <- sigma(penguin_lm)
+```
+
+```{r}
+noise <- function(x, mean = 0, sd){
+  x + rnorm(length(x), 
+            mean, 
+            sd)
+}
+```
+
+```{r}
+new_data <- tibble(predict_mass = noise(penguin_predict, 
+                                        sd = penguin_sigma
+                                          )
+                   )
+```
+
+```{r}
+nsims <- 100
+
+sims <- map_dfc(1:nsims,
+                ~ tibble(sim = noise(penguin_predict, sd = penguin_sigma)
+                        )
+                ) 
+```
+
+```{r}
+colnames(sims) <- colnames(sims) |> 
+  str_replace(pattern = "\\.\\.\\.",
+                  replace = "_")
+```
+
+```{r}
+sims <- penguins |> 
+  filter(!is.na(body_mass_g), 
+         !is.na(flipper_length_mm)) |> 
+  select(body_mass_g) |> 
+  bind_cols(sims)
+```
+
+```{r}
+sims |> 
+  map(~lm(body_mass_g ~ .x, data = sims))
+```
+
+```{r}
+library(generics)
+sims |> 
+  map(~lm(body_mass_g ~ .x, data = sims)) |> 
+  map(glance)
+```

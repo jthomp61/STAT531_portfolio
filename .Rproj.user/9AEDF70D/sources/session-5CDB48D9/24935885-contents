@@ -1,0 +1,69 @@
+---
+title: "PA5_Dates"
+format: html
+editor: visual
+---
+
+## Setup
+
+```{r}
+#|message: false
+library(tidyverse)
+library(lubridate)
+```
+
+load in the data:
+
+```{r}
+#| message: false
+times <- read_csv(here::here("Week 5", "Tues", "suspect_times.csv"))
+```
+
+#### 1. Occurred at Midnight
+
+```{r}
+# fixing the dates
+suspects <- times |> 
+  mutate(Time.Spotted = force_tz(Time.Spotted, tzone = "America/Los_Angeles")) |> 
+  filter(am(Time.Spotted) == FALSE)
+```
+
+#### 2. Not Tues or Thur
+
+```{r}
+suspects <- suspects |> 
+  filter(wday(Time.Spotted, 
+     label = TRUE) %in% c("Mon", "Wed", "Fri", "Sat", "Sun"))
+```
+
+#### 3. Thanksgiving
+
+```{r}
+thanx <-  ymd("20181122", tz = "America/Los_Angeles")
+
+suspects <- suspects |> 
+  filter(Time.Spotted <= thanx + days(35),
+         Time.Spotted >= thanx)
+```
+
+#### 4. Iceland
+
+```{r}
+suspects <- suspects |> 
+  mutate(Iceland.Time = with_tz(Time.Spotted, tzone = "Iceland")) |>
+  filter(pm(Iceland.Time) == TRUE)
+```
+
+#### 5. two days after the 22 of the month
+
+```{r}
+suspects <- suspects |> 
+  filter(day(Time.Spotted) == 23,
+         day(Time.Spotted) == 24)
+```
+
+```{r}
+start <- ymd_hms("19700101 00:00:00", tz = "America/Los_Angeles")
+
+hms::as_hms(start) / hms::as_hms(suspects$Time.Spotted) %% 2
+```

@@ -1,0 +1,201 @@
+---
+title: "Challenge 4"
+author: "Jamie Thompson"
+format: 
+  html: 
+    self-contained: true
+    code-fold: show
+    code-tools: true
+title-block-banner: true
+title-block-banner-color: "light blue"
+toc: true
+editor: visual
+---
+
+### Set Up
+
+```{r}
+#| message: false
+library(readxl)
+library(ggridges)
+library(tidyverse)
+```
+
+## Load in Data
+
+```{r}
+#| message: false
+homes <- read_xls(here::here("supporting_artifacts", 
+                             "extented-learning", 
+                             "Data", 
+                             "homes.xls"),
+                          sheet = "Median Price",
+                          skip = 7
+                        )
+
+avos <- read_csv(here::here("supporting_artifacts", 
+                            "learning_targets", 
+                            "Data",
+                            "avocado.csv")
+                 )
+```
+
+## Avocado Data Set Description:
+
+This data set is about avocado sales in specific US regions which include broad regions of the US and specific city regions as well as a total US row. The data came direly from retail sales of Hass avocados on retailer's cash registers and was collected from 2015 to 2018. It reflects a multi-outlet data set, meaning retail stores were aggregated from all the following channels: grocery, mass, club, drug,dollar, and military. It also includes weekly scan data for National retail volume (units) and price. It has 14 variables and 18259 observations which were over multiple dates.
+
+## Homes Data Set Description:
+
+This data set was generated from surveys taken from over 90 association of contains the median prices of REALTORS® throughout California. It represents the statistics from 1990 - 2022, of prices of single-family homes in all counties. I got this data set from <https://www.car.org/en/marketdata/data/housingdata> then clicking the link to **Median Prices of Existing Single Family Homes.**
+
+### Cleaning Avocado Data Set
+
+I cleaned the avocado data set similar to Lab4 however I specified everything I wanted in this step.
+
+```{r}
+#| message: false
+#| warning: false
+avos_clean <- avos |> 
+  separate(col = Date, 
+           into = c("Year", "Month", "Day"), 
+           sep = "-",
+           remove = TRUE) |> 
+  select(!year) |> 
+  # getting rid of the duplicate year
+  
+  rename("Small" = `4046`,
+         "Large" = `4225`,
+         "Extra_Large" = `4770`,
+         "city" = region) |> 
+  filter(city %in% c("LosAngeles", 
+                   "SanDiego", 
+                   "Sacramento", 
+                   "SanFrancisco")
+         ) |> 
+  pivot_longer(cols = c(Small, 
+                        Large, 
+                        Extra_Large), 
+               names_to = "Avocado_Size",
+               values_to = "amt_sold") |> 
+  select(`AveragePrice`,
+         `Total Volume`,
+         `city`)
+# the only three columns I will need
+```
+
+### Cleaning Homes Data Set:
+
+I isolated out only the years that the avocado study looked at so the information on prices and sales rates from both data sets are from roughly the same time. I also removed the `Day` column created because when loading in the data set, it changed the date format and gave it a day - it didn't originally have that in the `.xls` file.
+
+```{r}
+homes_clean <- homes |> 
+  separate(col = `Mon-Yr`, 
+           into = c("Year", 
+                    "Month", 
+                    "Day"), 
+           sep = "-",
+           remove = TRUE) |> 
+  select(!Day) |> 
+  filter(Year %in% c("2015", 
+                     "2016", 
+                     "2017", 
+                     "2018")
+         ) |> 
+  # selecting years that were in the avo dataset
+  
+  select(`Sacramento`, 
+         `San Francisco`, 
+         `Los Angeles`, 
+         `San Diego`,
+         Year) |> 
+  rename("SanFrancisco" = `San Francisco`,
+         "LosAngeles" = `Los Angeles`,
+         "SanDiego" = `San Diego`) |> 
+  # renamed them so they match the avocado dataset 
+  
+  pivot_longer(cols = c(`Sacramento`, 
+                        `SanFrancisco`, 
+                        `LosAngeles`, 
+                        `SanDiego`),
+               names_to = "city",
+               values_to = "home_price")
+```
+
+# Challenge 4:
+
+Creating the joined data set:
+
+1.  First I tried joined the cleaned data sets normally, however this... created a monster. It had tons of new rows. I think it duplicated the home price for EVERY row in the left data set (which was the Avo one. Ending up with about 190,000 rows.... I tried `copy = FALSE` but that did nothing.
+2.  Then I joining the data set by the 4 city regions [with averages]{.underline} (means) of total volume sold of avocados, average price of avocados, and average price of homes. This worked well!
+
+```{r Joining_Averages}
+#| warning: false
+#| message: false
+# creating averages in homes data set
+homes_avgs <- homes_clean |> 
+  group_by(city, Year) |> 
+  summarise(mean_home_price = mean(home_price)
+            )
+
+#combinding homes and avos data set
+Avos_Homes_Avgs <- avos_clean |> 
+  group_by(city) |> 
+  summarise(across(.cols = c(`Total Volume`, AveragePrice), 
+                   .fns = mean, na.rm = TRUE)
+            ) |> 
+  # creating the averages for the avos data set
+  
+  right_join(homes_avgs, by = "city") |> 
+  rename("Avg_Avos_Sold" = `Total Volume`,
+         "Avg_Avo_Price" = `AveragePrice`) |> 
+  mutate(tot_money = Avg_Avos_Sold * Avg_Avo_Price)
+  # adding another column of how much on average the city population 
+  #  spent on avocados. 
+       
+remove(homes_avgs)
+  # dont need this anymore!
+
+Avos_Homes_Avgs
+```
+
+# Visual for the two data sets:
+
+This graph shows homes with a higher price value (San Fransico and San Diego) also have lower avocado volume sales. LA at the time (2015-2018) had the second lowest housing cost and the most avocado sales. It would have been cool to also look at population density also, to get average inference on how much a person spends on avocados per year. Then compare that to how much a house is or even a down payment for those areas. For now, I can't really tell if avocado buying is impeding house sales.
+
+```{r}
+ggplot(data = Avos_Homes_Avgs, mapping = aes(x = Avg_Avos_Sold, y = mean_home_price)) + 
+  geom_point() 
+  
+```
+
+```{r}
+ggplot(data = Avos_Homes_Avgs, mapping = aes(x = city)) + 
+  geom_line(mapping = aes(y = Avg_Avos_Sold, 
+                          color = "Average Avocados \nSold (Volume)"),
+            group = 1) +
+  geom_line(mapping = aes(y = mean_home_price, 
+                          color = "Mean Price of \nHomes ($)"),
+            group = 2) +
+  geom_line(mapping = aes(y = tot_money, 
+                          color = "Average Money Spent \non Acocados ($)"),
+            group = 3) +
+  scale_color_manual(name = "Legend",
+                     breaks = c("Average Avocados \nSold (Volume)",
+                                "Mean Price of \nHomes ($)",
+                                "Average Money Spent \non Acocados ($)"),
+                     values = c("Average Avocados \nSold (Volume)" = "red",
+                                "Mean Price of \nHomes ($)" = "blue",
+                                "Average Money Spent \non Acocados ($)" = "green")
+                     ) |> 
+  labs(x = "City", y = "Value")
+```
+
+## A few notes:
+
+-   This website helped me figure out why `geom_line()` wasn't plotting the lines. I needed to define which data went with what group, so by specifying `group = 1` ... it was able to tell what plots to connect the lines with.
+
+    -   <https://stackoverflow.com/questions/27082601/ggplot2-line-chart-gives-geom-path-each-group-consist-of-only-one-observation>
+
+-   This website helped me figure out how to make a legend with the line plots. It was a hassle! But I figured it out, the `breaks` set the order of the legend, `values` map the color to the line plot. And you still need groups so it knows how to plot the points together!
+
+    -   <https://stackoverflow.com/questions/10349206/add-legend-to-ggplot2-line-plot>

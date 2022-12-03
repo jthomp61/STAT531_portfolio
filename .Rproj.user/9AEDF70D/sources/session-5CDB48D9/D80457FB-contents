@@ -1,0 +1,114 @@
+---
+title: "Challenge 3 Hip Hop"
+author: "Jamie Thompson"
+format: 
+  html: 
+    code-fold: show
+    code-tools: true
+title-block-banner: true
+title-block-banner-color: "light blue"
+toc: true
+editor: visual
+---
+
+# Setup
+
+```{r setup}
+#| message: false
+library(RColorBrewer)
+library(ggridges)
+library(tidyverse)
+```
+
+# Hip-Hop Data Set
+
+This data set is from a study done by a linguist at the University of Minnesota. The researcher wanted to predict musical taste based on familiarity with African American English. It studied 64 different African American English words on 168 participants resulting in 10752 observations (rows) and 38 different variables (columns). However, a majority of the variables are not dependent on the word variable, meaning they are repeated 64 times.
+
+```{r data_import}
+#| message: false 
+
+# load in the hiphop data set
+hiphop <- read_csv(here::here("Week 3", 
+                              "Lab 3", 
+                              "hiphop.csv")
+                    )
+```
+
+```{r cleaning_data}
+
+# clean data set
+hiphop_clean <- hiphop |> 
+  filter(city != 0) |> 
+  mutate(ethnic2 = if_else(ethnic != "white", 
+                           "non_white", 
+                           "white"),
+         across(where(is.character),
+                as.factor)
+         )
+```
+
+# Assignment:
+
+Let us instead compare the number of artists participants reported liking for each genre. Specifically, you will determine which music genre most differentiates each of the demographic groups provided. That is, which genre had much higher average (mean or median) reported artists in one group than the other.
+
+```{r}
+# Making new data set with desired variables
+hiphop_genre <- hiphop_clean |> 
+  distinct(subj, .keep_all = TRUE) |> 
+  select(sex, ethnic2, intl:unclassifiable)
+```
+
+### a. Male versus Female
+
+Looking at the table produced below, males had a much higher average for liking `vocal` artists (mean = 1.6) compared to females (mean = 0.9), and females had a higher average for liking `country` artists (mean = 0.8) compared to males (mean = 0.4).
+
+[**REVISED**]{.underline} code
+
+```{r part_a}
+hiphop_genre |> 
+  select(!ethnic2) |> 
+  group_by(sex) |> 
+  summarise_at(vars(intl:unclassifiable), mean) |> 
+  pivot_longer(cols = intl:unclassifiable,
+               names_to = "genera",
+               values_to = "mean") |> 
+  pivot_wider(names_from = sex,
+              values_from = mean) |>
+  rename("female_mean_like" = Female,
+         "male_mean_like" = Male) |>
+  mutate(diff_in_mean = female_mean_like - male_mean_like)
+```
+
+### b. White versus Non-White
+
+Looking at the next table below, non_whites had a much higher average for liking `international` artists (mean = 1.2) compared to whites (mean = 0.07). While whites had a higher average for liking `rock` artists (mean = 2.47) compared to non-whites (mean = 1.25) as well as `alternative` with a difference of means of 1.
+
+[**REVISED**]{.underline} Code
+
+```{r part_b}
+hiphop_genre |> 
+  select(!sex) |> 
+  group_by(ethnic2) |> 
+  summarise_at(vars(intl:unclassifiable), mean) |> 
+  pivot_longer(cols = c(intl, 
+                        vocal, 
+                        classical, 
+                        folk, 
+                        rock, 
+                        country, 
+                        pop, 
+                        alternative, 
+                        hiphop, 
+                        unclassifiable),
+               names_to = "genera",
+               values_to = "mean") |> 
+  pivot_wider(names_from = ethnic2,
+              values_from = mean) |> 
+  rename("non_white_mean_like" = non_white,
+         "white_mean_like" = white) |> 
+  mutate(diff_in_mean = non_white_mean_like - white_mean_like)
+```
+
+### **Study Design Critique**
+
+This study's goal was to see if familiarity of 'African American English' words and phrases were associated with liking of specific music genera that may use those words/phrases. They selected a majority white sample size and only reported on those who were not African American. They were presuming these the participants remember if the words/phrases are apart of songs they like to listen too, and that they are learned though listening to the songs (reference to the title). Its concerning they are making all these assumptions, and not considering other sources for learning these phrases like the internet, friends, family... or including a baseline of African Americans participants.

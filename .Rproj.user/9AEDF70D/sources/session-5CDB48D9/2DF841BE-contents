@@ -1,0 +1,24 @@
+---
+title: "The Power of Efficiency"
+format: 
+  html: 
+    self-contained: true
+title-block-banner: true
+title-block-banner-color: "light blue"
+editor: visual
+---
+
+Efficiency in terms of code writing is when run time, readability, and work load are taken into account so the code reader/writer can write/update/understand the code in the best way and therefore the computer can preform work in the best productive way. In statistical computing and data science, efficiency is better readability in the code for the human users; such as, named arguments, use of modern tools and functions, or if needed use of code writing that leans to readability instead of least work load on the computer (using something that is "less efficient" on the computer). It is important to understand what the code is doing, that way when it's looked at overtime, it can be easily be interpreted and save on human work time.
+
+Being efficient can allow me to write effective code, that lacks redundancy and is reproducible to others. This is why it is so important, if one is not efficient with their code, not only will it be difficult to understand but if there may be repeated code. This makes it difficult to update and edit later on. Furthermore, calling on the repeated code multiple times leads to a larger work load on the computer running the code.
+
+One of my ah-ha moments was during week 7 for Lab 7. I was redundant in a function I wrote shown in Image 1. With your feedback, I remembered (from my CPC101 course) that I could make a temp variable for calculations I would need to repeat. Doing so can allow me to call on the solution in the form of the temp variable so I do not have to repeat lines of code calculations (Image 2). It makes it easier to read and easier on the computer so it only needs to calculate the solution once, verses twice. \
+I don't remember any other specific ah-ha moments.
+
+Image 1:
+
+![](images/Screenshot%202022-12-03%20at%208.47.15%20AM.png)
+
+Image 2:
+
+![](images/Screenshot%202022-12-03%20at%208.47.40%20AM.png)

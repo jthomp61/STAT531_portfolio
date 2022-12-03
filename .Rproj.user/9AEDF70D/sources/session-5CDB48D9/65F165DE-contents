@@ -1,0 +1,87 @@
+---
+title: "Preview Activity 7"
+format: html
+editor: visual
+---
+
+### Recap
+
+Use the four step workflow whenever you need to write a function:
+
+1.  Create a real R object (or set of objects) to use with your function
+
+2.  Write code that works with the real object(s)
+
+3.  Wrap the code in `function()`
+
+4.  Assign the names of your real objects as argument names to the function
+
+## Question 1:
+
+Fill in the necessary code to write a function called `times_seven()`. The function should take a single argument and multiply the input by 7.
+
+This function should check that the argument is numeric.
+
+This function should also excitedly announce (print) "I love sevens!" if the argument to the function is a 7.
+
+```{r}
+times_seven <- function(x){
+  stopifnot(is.numeric(x))
+  arug <- x * 7
+  if(arug == 7){
+    print("I love sevens!")
+  }
+  return(arug)
+}
+
+times_seven(4)
+```
+
+Write a function called `find_car_make()` that takes as input the name of a car, and returns only the "make", or the company that created the car. For example, `find_car_make("Toyota Camry")` should return `"Toyota"` and `find_car_make("Ford Anglica")` should return `"Ford"`. (You can assume that the first word of a car name is always its make.)
+
+Once you've made your function, try it out on the built-in dataset `mtcars`. In these data the car information is included as rownames. Use the `rownames_to_column()`function to create a new column in the data called `make` that gives the make and model of each car.
+
+```{r}
+find_car_make <- function(car_name){
+  stopifnot(is.character(car_name))
+  make <- strsplit(car_name, split = " ")[[1]]
+  make <- make[1]
+  return(make)
+}
+find_car_make(car_name = "chevy corolla")
+
+add_something <- function(x, something)
+  if(!is.numeric(x)) {
+  stop("please enter a number!")
+}
+```
+
+```{r}
+make <- strsplit("toyota corolla", split = " ")[[1]]
+make[1]
+```
+
+`if()` and `elseif()` statments is not vectorized,
+
+-   however `if_else()`, and `ifelse()` in dplyr package,
+
+    -   requires your iftrue and iffalse below need to have the same datatype
+
+    -   `if_else(condition to check, ifTRUE, ifFALSE)`
+
+    -   if want to put an NA, but want it to be for a real data type, `NA_real_`, `NA_character_`, `NA_integer_`, `NA_complex_`
+
+`case_when()` needs tidyverse
+
+```{r}
+pos_neg_zero <- function(x){
+  stopifnot(is.numeric(x))
+  
+  state <- case_when(x > 0 ~ "Greater than 0!",
+                     x < 0 ~ "Less than 0!",
+                     TRUE ~ "Equal to 0!")
+  return(state)
+}
+
+pos_neg_zero(c(1, 5, 100, 0, -10)) 
+```

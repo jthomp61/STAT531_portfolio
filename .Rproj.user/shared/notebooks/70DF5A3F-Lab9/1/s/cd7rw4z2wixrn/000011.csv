@@ -1,0 +1,16 @@
+"0","StateAllison <- StateNames_A |>"
+"0","  mutate(Gender = as.factor(Gender),"
+"0","         Gender = fct_recode(Gender,"
+"0","                             Female = ""F"","
+"0","                             Male = ""M"")"
+"0","         ) |> "
+"0","  pivot_wider(names_from = Gender,"
+"0","              values_from = Count) |> "
+"0","  group_by(State) |> "
+"0","  filter(Name == ""Allison"") |>"
+"0","  summarise(across(Female:Male, sum),"
+"0","            across(Female:Male, ~replace_na(., 0))"
+"0","            ) "
+"2","Error in mutate(StateNames_A, Gender = as.factor(Gender), Gender = fct_recode(Gender,  : 
+  object 'StateNames_A' not found
+"
