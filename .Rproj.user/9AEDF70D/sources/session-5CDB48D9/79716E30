@@ -3,9 +3,9 @@
     "path": "~/Documents/Cal Poly/Fall 2022/STAT531/STAT531_portfolio/essays/data_scientist.qmd",
     "project_path": "essays/data_scientist.qmd",
     "type": "quarto_markdown",
-    "hash": "0",
+    "hash": "2886863091",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1670093401167.0,
     "source_on_save": false,
     "relative_order": 3,
@@ -21,11 +21,11 @@
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1669925680,
+    "lastKnownWriteTime": 1670095905,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1670095231854,
+    "last_content_update": 1670095905748,
     "read_only": false,
     "read_only_alternatives": []
 }
