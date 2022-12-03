@@ -173,7 +173,7 @@ ggplot(data = Avos_Homes_Avgs, mapping = aes(x = Avg_Avos_Sold, y = mean_home_pr
   
 ```
 
-### Visualizaiton Before Revision: 
+### Visualizaiton Before Revision:
 
 ```{r}
 ggplot(data = Avos_Homes_Avgs, mapping = aes(x = city)) + 
